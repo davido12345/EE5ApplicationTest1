@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Driver_mainpage">
+
+    <ImageView
+        android:id="@+id/Login"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/todo"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/arm"
+        />
+
+    <Button
+        android:id="@+id/UploadButton"
+        android:layout_width="220dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="180dp"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:text="Upload"
+        android:textSize="30dp"
+        />
+
+
+
+
+</RelativeLayout>
