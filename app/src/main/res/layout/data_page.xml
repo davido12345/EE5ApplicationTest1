@@ -21,7 +21,7 @@
         android:id="@+id/Sample"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/sample_of_arm"
+        android:src="@drawable/data_sample_arm"
         android:layout_marginTop="150dp"
         />
 
