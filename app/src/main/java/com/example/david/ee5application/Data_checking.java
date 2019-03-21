@@ -1,9 +1,12 @@
 package com.example.david.ee5application;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,28 +39,52 @@ public class Data_checking extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_checking);
-        listView = (ListView) findViewById(R.id.listView);
+        listView = findViewById(R.id.listView);
 
         Context context = getApplicationContext();
+
+        //Spinner1
         String[] ctype = new String[]{"Brussel", "Gent", "Anterwep"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spinner = super.findViewById(R.id.Session_Spinner);
+        spinner.setAdapter(adapter);
+
+        //Spinner2
+        String[] ctype1 = new String[]{"l", "2", "3"};
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype1);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spinner1 = super.findViewById(R.id.ID_Spinner);
+        spinner1.setAdapter(adapter1);
+
 
         //Fetch data from the Mower Table
         JSonVolley(Links.allMowerData);
-        try {
-            Thread.sleep(2000);
-            } catch (InterruptedException e){
-        }
+
+        //RequestQueue queue = Volley.newRequestQueue(this);
+
+
         //ListView
         setListView();
-        //Spinner
-        Spinner spinner = super.findViewById(R.id.Session_Spinner);
-        spinner.setAdapter(adapter);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, MachineList);
+        listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String name = MachineList.get(position);
+                if(name.equals("A-1"))
+                {
+                    Intent intent = new Intent(Data_checking.this, Data_page.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
+
     public void setListView(){
         for(int i =0; i<InfoArrays.name_Mower.size(); i++) {
             Log.d(TAG, "Adding ArrayList Elements");
@@ -65,11 +92,11 @@ public class Data_checking extends AppCompatActivity {
             Log.d(TAG, "Done Adding ArrayList Elements");
         }
         Log.d(TAG, MachineList.size()+" Is the size of machinelist");
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, MachineList);
-        listView.setAdapter(arrayAdapter);
-
+        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, MachineList);
+        //listView.setAdapter(arrayAdapter);
     }
     //Code to send a JSON volley to the DB
+
     private void JSonVolley(final String url) {
     RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -93,15 +120,12 @@ public class Data_checking extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-
         }
     });
-
         queue.add(jsonArrayRequest);
     }
 

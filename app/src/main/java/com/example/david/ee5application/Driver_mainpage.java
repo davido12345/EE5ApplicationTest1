@@ -23,10 +23,8 @@ public class Driver_mainpage extends AppCompatActivity {
                 data_upload.putExtra("Start",1);
                 startActivity(data_upload);
 
-
             }
         });
-
 
     }
 }

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
         Driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent driver = new Intent(LoginActivity.this,Driver_mainpage.class);
+                Intent driver = new Intent(LoginPageActivity.this,Driver_mainpage.class);
                 startActivity(driver);
             }
         });
@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         Admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent admin = new Intent(LoginActivity.this,Administrator_mainpage.class);
+                Intent admin = new Intent(LoginPageActivity.this,Administrator_mainpage.class);
                 startActivity(admin);
             }
         });

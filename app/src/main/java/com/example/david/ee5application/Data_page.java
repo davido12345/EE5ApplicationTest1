@@ -32,6 +32,5 @@ public class Data_page extends AppCompatActivity {
             }
         });
 
-
     }
 }
