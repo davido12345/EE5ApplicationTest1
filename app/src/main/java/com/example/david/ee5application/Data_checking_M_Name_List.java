@@ -9,11 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
-
-import com.example.david.ee5application.Databases.InfoArrays;
-import com.example.david.ee5application.Databases.Keys;
-import com.example.david.ee5application.Databases.Links;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,20 +16,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.david.ee5application.Databases.InfoArrays;
+import com.example.david.ee5application.Databases.Keys;
+import com.example.david.ee5application.Databases.Links;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class Data_checking extends AppCompatActivity {
-
+public class Data_checking_M_Name_List extends AppCompatActivity {
+    public static int machineSelected;
     ListView listView;
     String TAG = "David: ";
-    ArrayList<String> MachineList = new ArrayList<>();
+    public ArrayList<String> MachineList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,29 +39,8 @@ public class Data_checking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_checking);
         listView = findViewById(R.id.listView);
-
+        MachineList.clear();
         Context context = getApplicationContext();
-
-        //Spinner1
-        String[] ctype = new String[]{"Brussel", "Gent", "Anterwep"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner = super.findViewById(R.id.Session_Spinner);
-        spinner.setAdapter(adapter);
-
-        //Spinner2
-        String[] ctype1 = new String[]{"l", "2", "3"};
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype1);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner1 = super.findViewById(R.id.ID_Spinner);
-        spinner1.setAdapter(adapter1);
-
-
-        //Fetch data from the Mower Table
-        JSonVolley(Links.allMowerData);
-
-        //RequestQueue queue = Volley.newRequestQueue(this);
-
 
         //ListView
         setListView();
@@ -73,14 +49,22 @@ public class Data_checking extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+
+        //When an item is clicked we must redirect to a new page for the sessions of this one
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = MachineList.get(position);
-                if(name.equals("A-1"))
+                machineSelected = position+1;
+                Log.d(TAG, "The machine selected is "+machineSelected);
+                String name = MachineList.get(position); //The name of the machine which is clicked.
+                Log.d(TAG, " How much data received: "+InfoArrays.id_MowerS.size());
+                Intent intent = new Intent(Data_checking_M_Name_List.this, Data_checking_Session_List.class);
+                startActivity(intent);
+
+                /*if(name.equals("A-1"))
                 {
-                    Intent intent = new Intent(Data_checking.this, Data_page.class);
+                    Intent intent = new Intent(Data_checking_M_Name_List.this, Data_page.class);
                     startActivity(intent);
-                }
+                }*/
             }
         });
     }
@@ -96,42 +80,41 @@ public class Data_checking extends AppCompatActivity {
         //listView.setAdapter(arrayAdapter);
     }
     //Code to send a JSON volley to the DB
+    public void JSonVolley(final String url) {
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-    private void JSonVolley(final String url) {
-    RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
-    JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-            Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d(TAG, "got a response");
+                //manipulate response
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject jsonObject = response.getJSONObject(i);
 
-        @Override
-        public void onResponse(JSONArray response) {
-            Log.d(TAG, "got a response");
-            //manipulate response
-            try {
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject jsonObject = response.getJSONObject(i);
-
-                    try {
-                        JSonToArray(jsonObject, url);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        try {
+                            JSonToArray(jsonObject, url);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
-    }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-        }
-    });
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
         queue.add(jsonArrayRequest);
     }
 
     //Code to transfer retrieved JSON data into arraylists in the application.
     public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
-        if(url.equals(Links.allMowerData)) {
+        if (url.equals(Links.allMowerData)) {
             InfoArrays.type_Mower.add(jsonObject.getString(Keys.Type));
             Log.d(TAG, "TYPE INPUT");
             InfoArrays.id_Mower.add(jsonObject.getInt(Keys.id_Mower));
@@ -139,7 +122,7 @@ public class Data_checking extends AppCompatActivity {
             InfoArrays.name_Mower.add(jsonObject.getString(Keys.name_Mower));
             Log.d(TAG, "Name INPUT");
 
-        }else if(url.equals(Links.allSessionData)) {
+        } else if (url.equals(Links.allSessionData)) {
 
             InfoArrays.id_dataSD.add(jsonObject.getInt(Keys.session_data_id));
             InfoArrays.id_MowerSD.add(jsonObject.getString(Keys.session_mower_id));
@@ -155,7 +138,7 @@ public class Data_checking extends AppCompatActivity {
             InfoArrays.Yaw_1SD.add(jsonObject.getDouble(Keys.session_data_Yaw_1));
             InfoArrays.Roll_1SD.add(jsonObject.getDouble(Keys.session_data_Roll_1));
 
-        }else if(url.equals(Links.allSessions)) {
+        } else if (url.equals(Links.allSessions)) {
 
             InfoArrays.id_sess.add(jsonObject.getInt(Keys.id_sess));
             InfoArrays.id_MowerS.add(jsonObject.getInt(Keys.id_Mower));
@@ -164,6 +147,7 @@ public class Data_checking extends AppCompatActivity {
             InfoArrays.Duration.add(jsonObject.getString(Keys.session_Duration));
         }
         //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
-
     }
+
+
 }

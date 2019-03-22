@@ -6,61 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".Driver_mainpage">
 
- <TextView
-     android:id="@+id/Data_checking"
-     android:layout_width="wrap_content"
-     android:layout_height="70dp"
-     android:text="Data Checking"
-     android:textSize="30dp"
-     android:gravity="center"
-     android:layout_centerHorizontal="true"
-     android:layout_marginTop="20dp"
-     />
 
-    <TextView
-        android:id="@+id/Session_choose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:layout_marginLeft="90dp"
-        android:text="Session"
-        android:textSize="25dp"
-        />
-
-
-<Spinner
-    android:id="@+id/Session_Spinner"
-    android:layout_width="50dp"
-    android:layout_height="20dp"
-    android:layout_marginTop="130dp"
-    android:layout_toRightOf="@+id/Session_choose"
-    >
-</Spinner>
-
-    <TextView
-        android:id="@+id/ID_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/Session_choose"
-        android:text="ID Number"
-        android:layout_marginLeft="90dp"
-        android:textSize="25dp" />
-
-    <Spinner
-        android:id="@+id/ID_Spinner"
-        android:layout_width="50dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="160dp"
-        android:layout_toRightOf="@+id/ID_name"
-        >
-    </Spinner>
-
-    <ListView
-        android:id="@+id/listView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="307dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_toStartOf="@+id/Data_checking"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/Data_checking"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:text="Active Mowing Machines"
+            android:textSize="30dp" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -106,4 +106,9 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_data_checking__m__session__list">Data_checking_M_Session_List
+    </string>
+    <string name="title_activity_m__name_to__sess__load">M_Name_to_Sess_Load</string>
+    <string name="title_activity_loading__page_1">Loading_Page_1</string>
+    <string name="title_activity_loading__page_2">Loading_Page_2</string>
 </resources>
