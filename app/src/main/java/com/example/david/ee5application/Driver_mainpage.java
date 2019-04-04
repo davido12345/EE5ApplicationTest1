@@ -14,6 +14,7 @@ public class Driver_mainpage extends AppCompatActivity {
         setContentView(R.layout.driver_mainpage);
 
         Button Upload = (Button)findViewById(R.id.UploadButton);
+        Button ConnectToBluetooth = (Button)findViewById(R.id.buttonBluetooth);
 
 
         Upload.setOnClickListener(new View.OnClickListener() {
@@ -25,6 +26,15 @@ public class Driver_mainpage extends AppCompatActivity {
 
             }
         });
+        ConnectToBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent blueToothPairing = new Intent(Driver_mainpage.this,MainActivity.class);
+                startActivity(blueToothPairing);
+
+            }
+        });
+
 
     }
 }
