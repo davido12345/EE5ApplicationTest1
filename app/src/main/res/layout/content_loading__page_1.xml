@@ -28,12 +28,6 @@
             android:layout_height="wrap_content"
             android:text="Data Not Yet Loaded" />
 
-        <Button
-            android:id="@+id/loadingButton1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Display Data" />
-
         <ListView
             android:id="@+id/listViewSessions"
             android:layout_width="match_parent"

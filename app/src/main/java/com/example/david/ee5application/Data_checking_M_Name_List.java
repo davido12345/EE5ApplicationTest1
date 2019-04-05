@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -57,15 +58,16 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
                 Log.d(TAG, "The machine selected is "+machineSelected);
                 String name = MachineList.get(position); //The name of the machine which is clicked.
                 Log.d(TAG, " How much data received: "+InfoArrays.id_MowerS.size());
-                Intent intent = new Intent(Data_checking_M_Name_List.this, Data_checking_Session_List.class);
-                startActivity(intent);
+                String fetchURL = Links.specificSessions+(position+1);
+                Log.d(TAG, "THE URL ACCESSED IS: "+fetchURL);
+                clearOldSessData();
+                Context context = getApplicationContext();
+                Toast toast = Toast.makeText(context, "Retrieving Session Data From Database", Toast.LENGTH_SHORT);
+                toast.show();
+                JSonVolley(fetchURL);
 
-                /*if(name.equals("A-1"))
-                {
-                    Intent intent = new Intent(Data_checking_M_Name_List.this, Data_page.class);
-                    startActivity(intent);
-                }*/
-            }
+
+           }
         });
     }
 
@@ -99,7 +101,14 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                     }
+
+                    //TRY HERE
+                    Intent intent = new Intent(Data_checking_M_Name_List.this, Data_checking_Session_List.class);
+                    startActivity(intent);
+                    //finish();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -138,7 +147,7 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
             InfoArrays.Yaw_1SD.add(jsonObject.getDouble(Keys.session_data_Yaw_1));
             InfoArrays.Roll_1SD.add(jsonObject.getDouble(Keys.session_data_Roll_1));
 
-        } else if (url.equals(Links.allSessions)) {
+        } else {
 
             InfoArrays.id_sess.add(jsonObject.getInt(Keys.id_sess));
             InfoArrays.id_MowerS.add(jsonObject.getInt(Keys.id_Mower));
@@ -147,6 +156,13 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
             InfoArrays.Duration.add(jsonObject.getString(Keys.session_Duration));
         }
         //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
+    }
+    public void clearOldSessData(){
+        InfoArrays.id_sess.clear();
+        InfoArrays.id_MowerS.clear();
+        InfoArrays.dateS.clear();
+        InfoArrays.startTimeS.clear();
+        InfoArrays.Duration.clear();
     }
 
 

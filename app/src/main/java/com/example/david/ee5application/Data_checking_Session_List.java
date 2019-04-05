@@ -48,47 +48,36 @@ public class Data_checking_Session_List extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading__page_1);
         Log.d(TAG, "Page Created");
-        Log.d(TAG, "The URL accessed is: "+fetchURL);
-
+        Log.d(TAG, "THE SIZE OF ARRAYLIST CONTAINING PREVIOUS QUERY IS: "+InfoArrays.id_sess.size());
+        //Set Textbox
         TextView dataStatus = (TextView)findViewById(R.id.dataStatus);
         dataStatus.setText("Data Retreival Dependant on Network Speed!");
-        JSonVolley(fetchURL);
-
-
+        SessionList.clear();
 
         //Set Page Title
         TextView pageTitle = (TextView)findViewById(R.id.textViewSessions);
         pageTitle.setText("Machine "+machineID+" Session List");
 
-        clearOldData();
-        setListView();
-        Button Load_Data = (Button)findViewById(R.id.loadingButton1);
+
         ListView listView = findViewById(R.id.listViewSessions);
         listView.setAdapter(null);
-        Load_Data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SessionList.clear();
-                Log.d(TAG, "The size of the arrayList: "+SessionList.size());
-                setListView();
-            }
-        });
 
-
+        setListView();
         //ListView
-
-
-
     }
 
 
 
     public void setListView(){
+        SessionList.clear();
         for(int i =0; i<InfoArrays.id_MowerS.size(); i++) {
             ListView listView = findViewById(R.id.listViewSessions);
-            Log.d(TAG, "Adding ArrayList Elements");
-            SessionList.add("Session ID: " +InfoArrays.id_sess.get(i)+ ", Session start time: "+InfoArrays.startTimeS.get(i));
+            Log.d(TAG, "Adding ArrayList Elements for MACHINE NUMBER: "+machineID);
+            if(InfoArrays.id_MowerS.get(i) == machineID) {
+                SessionList.add("Session ID: " + InfoArrays.id_sess.get(i) + ", Session start time: " + InfoArrays.startTimeS.get(i));
+            }
             Log.d(TAG, "Done Adding ArrayList Elements");
+
 
             ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, SessionList);
 
@@ -194,13 +183,7 @@ public class Data_checking_Session_List extends AppCompatActivity {
         //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
     }
 
-    public void clearOldData(){
-        InfoArrays.id_sess.clear();
-        InfoArrays.id_MowerS.clear();
-        InfoArrays.dateS.clear();
-        InfoArrays.startTimeS.clear();
-        InfoArrays.Duration.clear();
-    }
+
 
 
 }

@@ -1,11 +1,13 @@
 package com.example.david.ee5application;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,7 +31,7 @@ public class Administrator_mainpage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.administrator_page);
         clearOldMachineData();
-        JSonVolley(Links.allMowerData);
+
 
         Button Data_checking = (Button)findViewById(R.id.Data_check);
         Button Map_checking = (Button)findViewById(R.id.Map_check);
@@ -37,9 +39,11 @@ public class Administrator_mainpage extends AppCompatActivity {
         Data_checking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent data_check = new Intent(Administrator_mainpage.this,Data_checking_M_Name_List.class);
-                startActivity(data_check);
-                finish();
+                Context context = getApplicationContext();
+                Toast toast = Toast.makeText(context, "Retrieving Machine Data From Database", Toast.LENGTH_SHORT);
+                toast.show();
+                JSonVolley(Links.allMowerData);
+
             }
         });
 
@@ -74,6 +78,12 @@ public class Administrator_mainpage extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
+
+                    //TRY NEW ACTIVITY LAUNCH HERE
+                    Intent data_check = new Intent(Administrator_mainpage.this,Data_checking_M_Name_List.class);
+                    startActivity(data_check);
+                    finish();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
