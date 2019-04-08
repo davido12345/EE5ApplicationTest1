@@ -44,6 +44,7 @@ public class Arm_state_page extends AppCompatActivity {
                 Context context = getApplicationContext();
                 Toast toast = Toast.makeText(context, "Preparing Map", Toast.LENGTH_SHORT);
                 toast.show();
+                clearOldSessData();
                 JSonVolley(queryURL);
 
 
@@ -105,5 +106,10 @@ public class Arm_state_page extends AppCompatActivity {
 
         }
         //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
+    }
+    public void clearOldSessData(){
+        InfoArrays.GpsLocationsX.clear();
+        InfoArrays.GpsLocationsY.clear();
+        InfoArrays.GpsLocations.clear();
     }
 }
