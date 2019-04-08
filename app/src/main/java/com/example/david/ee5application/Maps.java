@@ -67,6 +67,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
             rectOptions.add(new LatLng(InfoArrays.GpsLocationsX.get(i), InfoArrays.GpsLocationsY.get(i)));
         }
         Polyline polyline = mMap.addPolyline(rectOptions);
+        
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(InfoArrays.GpsLocationsX.get(0), InfoArrays.GpsLocationsY.get(0)), 12.0f));
     }
 }
