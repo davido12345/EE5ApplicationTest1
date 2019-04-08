@@ -306,27 +306,3 @@ public class BluetoothConnectionService {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

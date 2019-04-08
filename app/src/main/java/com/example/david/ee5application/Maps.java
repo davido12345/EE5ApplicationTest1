@@ -1,19 +1,31 @@
 package com.example.david.ee5application;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.david.ee5application.Databases.InfoArrays;
+import com.example.david.ee5application.Databases.Links;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+
 
 public class Maps extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    String TAG = "Google Map";
+    ArrayList<Marker> MarkerList = new ArrayList<Marker>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +34,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Log.d(TAG,"The arraylist contains: "+ InfoArrays.GpsLocations.size());
     }
 
 
@@ -40,8 +53,20 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        for (int i=0; i<InfoArrays.GpsLocations.size(); i++)
+        {
+
+            LatLng temp = InfoArrays.GpsLocations.get(i);
+            Log.d(TAG, "The value of the coordinate added: "+temp);
+            Marker newMarker = mMap.addMarker(new MarkerOptions().position(temp));
+            MarkerList.add(newMarker);
+        }
+        PolylineOptions rectOptions = new PolylineOptions().color(Color.RED).width(2);
+        for(int i = 0; i<MarkerList.size(); i++) {
+            LatLng temp = InfoArrays.GpsLocations.get(i);
+            rectOptions.add(new LatLng(InfoArrays.GpsLocationsX.get(i), InfoArrays.GpsLocationsY.get(i)));
+        }
+        Polyline polyline = mMap.addPolyline(rectOptions);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(InfoArrays.GpsLocationsX.get(0), InfoArrays.GpsLocationsY.get(0)), 12.0f));
     }
 }

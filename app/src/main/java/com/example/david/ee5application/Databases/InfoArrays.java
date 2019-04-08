@@ -1,6 +1,8 @@
 package com.example.david.ee5application.Databases;
 
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 public class InfoArrays {
@@ -36,6 +38,10 @@ public class InfoArrays {
     public static ArrayList<String> dateS = new ArrayList<String>();
     public static ArrayList<String> startTimeS = new ArrayList<String>();
     public static ArrayList<String> Duration = new ArrayList<String>();
+
+    public static ArrayList<LatLng> GpsLocations = new ArrayList<LatLng>();
+    public static ArrayList<Double> GpsLocationsX = new ArrayList<Double>();
+    public static ArrayList<Double> GpsLocationsY = new ArrayList<Double>();
 
     public InfoArrays() {
 

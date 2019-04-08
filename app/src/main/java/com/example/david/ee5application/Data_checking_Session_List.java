@@ -40,7 +40,7 @@ import static com.example.david.ee5application.Data_checking_M_Name_List.machine
 public class Data_checking_Session_List extends AppCompatActivity {
     public ArrayList<String> SessionList = new ArrayList<>();
     String TAG = "Loading Page";
-    int machineID = machineSelected;
+    public int machineID = machineSelected;
     String fetchURL = Links.specificSessions+machineID;
 
     @Override
