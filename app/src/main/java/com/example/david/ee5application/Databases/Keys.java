@@ -14,6 +14,9 @@ public class Keys {
     public static final String session_startTime = "time_SessionStart";
     public static final String session_Duration = "duration_Session";
 
+    public static final String password = "Password";
+    public static final String Usernames = "Usernames";
+
 
     public static final String session_id = "id_Session";
     public static final String session_data_id = "id_SessionData";

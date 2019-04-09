@@ -10,7 +10,8 @@ public class InfoArrays {
     //DON'T USE...
     //this is only for logging in successfully in the main Activity
     //after that ONLY use UserInfo
-
+    public static ArrayList<String> password = new ArrayList<String>();
+    public static ArrayList<String> username = new ArrayList<String>();
     public static ArrayList<Integer> id_Mower = new ArrayList<Integer>();
     public static ArrayList<String> type_Mower = new ArrayList<String>();
     public static ArrayList<String> name_Mower = new ArrayList<String>();
