@@ -8,8 +8,10 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.UUID;
@@ -251,7 +253,20 @@ public class BluetoothConnectionService {
             while (true) {
                 // Read from the InputStream
                 try {
+                    try {
+                        Thread.sleep(1600);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     bytes = mmInStream.read(buffer);
+                    //INPUT STREAM TO DATAPACKET
+                    Log.d(TAG, "The method I have writter now returns: "+readUntilChar(mmInStream, '*'));
+
+
+
+
+
+
                     String incomingMessage = new String(buffer, 0, bytes);
                     Log.d(TAG, "InputStream: " + incomingMessage);
 
@@ -304,5 +319,24 @@ public class BluetoothConnectionService {
         //perform the write
         mConnectedThread.write(out);
     }
+    public static String readUntilChar(InputStream stream, char target) {
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(stream));
+            char a;
+            while ((a = (char) buffer.read()) != '*') {
+                char c = (char) a;
+                if (c == target)
+                    break;
+                sb.append(c);
+            }
+            System.out.println(sb.toString());
+        } catch (IOException e) {
+        }
+        return sb.toString();
+    }
+
+
 
 }

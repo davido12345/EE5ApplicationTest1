@@ -41,7 +41,7 @@
         <activity android:name=".Joystick_data_page" />
         <activity android:name=".Temperature_sensor_data_page" />
         <activity android:name=".Ventilator_data_page" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".BluetoothInit" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

@@ -29,7 +29,7 @@ public class Driver_mainpage extends AppCompatActivity {
         ConnectToBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent blueToothPairing = new Intent(Driver_mainpage.this,MainActivity.class);
+                Intent blueToothPairing = new Intent(Driver_mainpage.this, BluetoothInit.class);
                 startActivity(blueToothPairing);
 
             }

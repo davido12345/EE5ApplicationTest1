@@ -15,17 +15,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.UUID;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    private static final String TAG = "MainActivity";
+public class BluetoothInit extends AppCompatActivity implements AdapterView.OnItemClickListener{
+    private static final String TAG = "BluetoothInit";
 
     BluetoothAdapter mBluetoothAdapter;
 
@@ -189,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        lvNewDevices.setOnItemClickListener(MainActivity.this);
+        lvNewDevices.setOnItemClickListener(BluetoothInit.this);
 
         enableDisableBT();
         //ENABLE DISCOVERY
@@ -223,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             Log.d(TAG, "Connection Made");
                             mBTDevices.get(i).createBond();
                             mBTDevice = mBTDevices.get(i);
-                            mBluetoothConnection = new BluetoothConnectionService(MainActivity.this);
+                            mBluetoothConnection = new BluetoothConnectionService(BluetoothInit.this);
 
                         }
                     }
@@ -231,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Context context = getApplicationContext();
                     Toast toast = Toast.makeText(context, "Bluetooth Connection Successful", Toast.LENGTH_SHORT);
                     toast.show();
-                    Intent Recording = new Intent(MainActivity.this, RecordingActivity.class);
+                    Intent Recording = new Intent(BluetoothInit.this, RecordingActivity.class);
                     startActivity(Recording);
                 }
 
@@ -246,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void startConnection(){
         startBTConnection(mBTDevice,MY_UUID_INSECURE);
     }
+
 
     /**
      * starting chat service method
@@ -307,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             mBTDevices.get(i).createBond();
 
             mBTDevice = mBTDevices.get(i);
-            mBluetoothConnection = new BluetoothConnectionService(MainActivity.this);
+            mBluetoothConnection = new BluetoothConnectionService(BluetoothInit.this);
         }
     }
 }
