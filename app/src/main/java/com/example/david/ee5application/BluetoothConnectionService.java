@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 
@@ -254,21 +255,80 @@ public class BluetoothConnectionService {
                 // Read from the InputStream
                 try {
                     try {
-                        Thread.sleep(1600);
+                        Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     bytes = mmInStream.read(buffer);
                     //INPUT STREAM TO DATAPACKET
-                    Log.d(TAG, "The method I have writter now returns: "+readUntilChar(mmInStream, '*'));
-
-
-
-
-
-
                     String incomingMessage = new String(buffer, 0, bytes);
-                    Log.d(TAG, "InputStream: " + incomingMessage);
+
+                    String Mower_id="";
+                    String Time="";
+                    String GPS_x="";
+                    String GPS_y="";
+                    String Joystick="";
+                    String Oil_temp="";
+                    String Pitch_1="";
+                    String Roll_1="";
+                    String Yaw_1="";
+                    String Pitch_2="";
+                    String Roll_2="";
+                    String Yaw_2="";
+                    String Pitch_3="";
+                    String Roll_3="";
+                    String Yaw_3="";
+
+                    Log.d(TAG, "Input Stream: "+incomingMessage);
+
+                    String[] packet = incomingMessage.split("#");
+                    String first =  packet[0];
+                    Log.d(TAG, "The first packet selected: "+first);
+                    String second = packet[1];
+
+                    Log.d(TAG, "The Second packet selected: "+second);
+                        if(first.contains("%") && first.contains(">")){
+                            String[] separated = first.split("\\*");
+                            Log.d(TAG, "WE DID THIS 1");
+                            Mower_id =  separated[1];
+                            Time =  separated[2];
+                            GPS_x = separated[3];
+                            GPS_y = separated[4];
+                            Joystick = separated[5];
+                            Oil_temp = separated[6];
+                            Pitch_1 = separated[7];
+                            Roll_1 = separated[8];
+                            Yaw_1 = separated[9];
+                            Pitch_2 = separated[10];
+                            Roll_2 = separated[11];
+                            Yaw_2 = separated[12];
+                            Pitch_3 = separated[13];
+                            Roll_3 = separated[14];
+                            Yaw_3 = separated[15];
+                         } else if (second.contains("%")){
+                            String[] separated = second.split("\\*");
+                            Log.d(TAG, "WE DID THIS 2");
+                            Mower_id =  separated[1];
+                            Time =  separated[2];
+                            GPS_x = separated[3];
+                            GPS_y = separated[4];
+                            Joystick = separated[5];
+                            Oil_temp = separated[6];
+                            Pitch_1 = separated[7];
+                            Roll_1 = separated[8];
+                            Yaw_1 = separated[9];
+                            Pitch_2 = separated[10];
+                            Roll_2 = separated[11];
+                            Yaw_2 = separated[12];
+                            Pitch_3 = separated[13];
+                            Roll_3 = separated[14];
+                            Yaw_3 = separated[15];
+                        } else {
+                            Log.d(TAG, "WE DID THIS NONE!");
+                        }
+                    Log.d(TAG, "MOWER ID: " + Mower_id);
+                    Log.d(TAG, "Time: " + Time);
+                    Log.d(TAG, "Yaw_3: " + Yaw_3);
 
                 } catch (IOException e) {
                     Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
@@ -325,7 +385,7 @@ public class BluetoothConnectionService {
         try {
             BufferedReader buffer = new BufferedReader(new InputStreamReader(stream));
             char a;
-            while ((a = (char) buffer.read()) != '*') {
+            while ((a = (char) buffer.read()) != '#') {
                 char c = (char) a;
                 if (c == target)
                     break;
