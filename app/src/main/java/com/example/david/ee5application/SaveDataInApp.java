@@ -1,4 +1,6 @@
+/*
 package com.example.david.ee5application;
+
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -138,5 +140,6 @@ public class SaveDataInApp extends SQLiteOpenHelper {
     public void deleteSessionData(int packetID){
 
     }
-    */
+
 }
+        */

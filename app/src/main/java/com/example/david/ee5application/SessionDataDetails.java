@@ -1,9 +1,20 @@
 package com.example.david.ee5application;
 
 public class SessionDataDetails {
+
+
+    private int Packet_id;
     private int Session_id;
     private int Key_Mower_id;
 
+
+    public int getPacket_id() {
+        return Packet_id;
+    }
+
+    public void setPacket_id(int packet_id) {
+        Packet_id = packet_id;
+    }
     public int getSession_id() {
         return Session_id;
     }
