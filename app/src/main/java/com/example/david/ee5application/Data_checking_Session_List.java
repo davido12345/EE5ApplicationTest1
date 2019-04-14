@@ -180,7 +180,6 @@ public class Data_checking_Session_List extends AppCompatActivity {
             //txtView.setText("Data Received!");
 
         }
-        //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
     }
 
 

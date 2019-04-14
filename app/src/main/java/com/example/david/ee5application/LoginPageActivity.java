@@ -70,83 +70,12 @@ public class LoginPageActivity extends AppCompatActivity {
                     toast.show();
                 }
 
-
-
-                //Intent driver = new Intent(LoginPageActivity.this,Driver_mainpage.class);
-                //startActivity(driver);
-                //InfoArrays.password.clear();
-                //InfoArrays.username.clear();
-                //String userQuery = Links.getUsername +"%27"+usernameField.getText().toString()+"%27";
-                //String passQuery = Links.getPassword +"%27"+passwordField.getText().toString()+"%27";
-                //passCheck = passQuery;
-                //password = passwordField.getText().toString();
-                //There is no wifi so probably no need to check the database
-                //JSonVolley(userQuery);
-                //JSonVolley(passQuery);
             }
         });
 
 
     }
-    /*
-    public void JSonVolley(final String url) {
-        RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-            @Override
-            public void onResponse(JSONArray response) {
-                Log.d(TAG, "got a response");
-                //manipulate response
-                try {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject jsonObject = response.getJSONObject(i);
-
-                        try {
-                            JSonToArray(jsonObject, url);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    //TRY HERE NEW INTENT
-                    if(url == passCheck)
-                    {
-                        Log.d(TAG, "First If Statement OK");
-                            if(InfoArrays.username.get(0) == "admin" && InfoArrays.password.get(0) == "admin")
-                            {
-                                Log.d(TAG, "Second statement OK");
-                                Intent intent = new Intent(LoginPageActivity.this, Administrator_mainpage.class);
-                                startActivity(intent);
-                            } else {
-                                Intent intent = new Intent(LoginPageActivity.this, Driver_mainpage.class);
-                                startActivity(intent);
-                            }
-                        }
-
-                    //finish();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-        queue.add(jsonArrayRequest);
-    }
-
-    //Code to transfer retrieved JSON data into arraylists in the application.
-    public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
-            InfoArrays.password.add(jsonObject.getString(Keys.password));
-            InfoArrays.username.add(jsonObject.getString(Keys.Usernames));
-        }
-        //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
-    */
     }
 
 

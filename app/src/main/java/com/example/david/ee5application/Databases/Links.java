@@ -10,4 +10,5 @@ public class Links {
     public static final String allSessions = "https://a18ee5mow2.studev.groept.be/GetAllSessions.php";
     public static final String specificSessions = "https://a18ee5mow2.studev.groept.be/GetSpecificSessions.php?mow_id=";
     public static final String specificSessionsGPS = "https://a18ee5mow2.studev.groept.be/GetGPSData.php?id_Mower=";
+    public static final String specificMowerMax = "https://a18ee5mow2.studev.groept.be/GetSpecificMowerMaxSession.php?id_Mower=";
 }
