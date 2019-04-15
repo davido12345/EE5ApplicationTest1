@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class Driver_mainpage extends AppCompatActivity {
-
+    public static final int machineID = 1; // SET IN THE CONFIG FILE.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -26,7 +26,7 @@ import java.util.UUID;
 
 
 
-public class BluetoothConnectionService extends SQLiteOpenHelper {
+public class BluetoothConnectionService{
     public static int storedCount;
 
     public static final String TAG2 = "QUAIL: ";
@@ -96,7 +96,6 @@ public class BluetoothConnectionService extends SQLiteOpenHelper {
     private ConnectedThread mConnectedThread;
 
     public BluetoothConnectionService(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         start();
@@ -306,7 +305,8 @@ public class BluetoothConnectionService extends SQLiteOpenHelper {
             byte[] buffer = new byte[1024];  // buffer store for the stream
             int packet_id = 0;
             int bytes; // bytes returned from read()
-            addSessionToHistory();
+            In_App_Database db = new In_App_Database(mContext);
+            db.createHistoricLog();
             // Keep listening to the InputStream until an exception occurs
             while (true) {
                 // Read from the InputStream
@@ -390,7 +390,7 @@ public class BluetoothConnectionService extends SQLiteOpenHelper {
                     Log.d(TAG, "MOWER ID: " + Mower_id);
                     Log.d(TAG, "Time: " + Time);
                     Log.d(TAG, "Yaw_3: " + Yaw_3);
-                    addNewPacket(packet_id, Mower_id, Date, Time, GPS_x, GPS_y, Joystick, Oil_temp, Pitch_1, Roll_1, Yaw_1, Pitch_2, Roll_2, Yaw_2, Pitch_3, Roll_3, Yaw_3);
+                    db.addNewPacket(packet_id, Mower_id, Date, Time, GPS_x, GPS_y, Joystick, Oil_temp, Pitch_1, Roll_1, Yaw_1, Pitch_2, Roll_2, Yaw_2, Pitch_3, Roll_3, Yaw_3);
                     Log.d(TAG, "Packet addition was successful");
                     packet_id++;
                     //getPacket(1);
@@ -466,195 +466,5 @@ public class BluetoothConnectionService extends SQLiteOpenHelper {
 
 */
 
-
-
-
-
-    private void addNewPacket(
-            int packet_id, String Mower_id, String Date, String Time, String GPS_x, String GPS_y, String Joystick,
-            String Oil_temp, String Pitch_1, String Roll_1, String Yaw_1, String Pitch_2,
-            String Roll_2, String Yaw_2, String Pitch_3, String Roll_3, String Yaw_3
-    )
-    {
-        SessionDataDetails sessionDetails = new SessionDataDetails();
-        Log.d(TAG, "Packet_ID is: "+packet_id);
-        if (!STRING_EMPTY.equals(Mower_id) &&
-                !STRING_EMPTY.equals(Time) &&
-                !STRING_EMPTY.equals(GPS_x) &&
-                !STRING_EMPTY.equals(GPS_y)) {
-            sessionDetails.setPacket_id(packet_id);
-            sessionDetails.setKey_Mower_id(Integer.parseInt(Mower_id));
-            sessionDetails.setSession_id(storedCount);
-            sessionDetails.setKey_Date(Date);
-            sessionDetails.setKey_Time(Time);
-            sessionDetails.setKey_Gps_x(Double.parseDouble(GPS_x));
-            sessionDetails.setKey_Gps_y(Double.parseDouble(GPS_y));
-            sessionDetails.setKey_Joystick(Double.parseDouble(Joystick));
-            sessionDetails.setKey_Oil_Temp(Double.parseDouble(Oil_temp));
-            sessionDetails.setKey_Pitch_1(Double.parseDouble(Pitch_1));
-            sessionDetails.setKey_Pitch_2(Double.parseDouble(Pitch_2));
-            sessionDetails.setKey_Pitch_3(Double.parseDouble(Pitch_3));
-            sessionDetails.setKey_Roll_1(Double.parseDouble(Roll_1));
-            sessionDetails.setKey_Roll_2(Double.parseDouble(Roll_2));
-            sessionDetails.setKey_Roll_3(Double.parseDouble(Roll_3));
-            sessionDetails.setKey_Yaw_1(Double.parseDouble(Yaw_1));
-            sessionDetails.setKey_Yaw_2(Double.parseDouble(Yaw_2));
-            sessionDetails.setKey_Yaw_3(Double.parseDouble(Yaw_3));
-
-            addSessionData(sessionDetails);
-
-        } else {
-            Log.d(TAG, "SOMETHING HAS GONE WRONG AS THERE IS NO GPS/TIME DATA!");
-        }
-    }
-
-
-    @Override
-    public void onCreate(SQLiteDatabase db){
-        db.execSQL(SQL_CREATE_DATA_HISTORY);
-        db.execSQL(SQL_CREATE_SESSION_DATA);
-
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1){
-        //Drop the table while upgrading the database
-        // such as adding new column or changing existing constraint
-        db.execSQL(SQL_DELETE_SESSION_DATA);
-        this.onCreate(db);
-    }
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        this.onUpgrade(db, oldVersion, newVersion);
-    }
-    //adds new packet
-    public void addSessionToHistory()
-    {
-
-
-        //This query checks the existing table to see how many tables already exist in history.
-        int NthEntry = 0;
-        //FOR THE ASCENDING/DESCENDING ORDER HERE IS IMPORTANT!!!
-        String selectQuery = "SELECT MAX("+Key_Table_id+") FROM Data_History";
-        SQLiteDatabase db_read = this.getReadableDatabase();
-        Cursor cursor = db_read.rawQuery(selectQuery, null);
-        //if table has rows
-        if(cursor.moveToFirst()){
-            do{
-                NthEntry = cursor.getInt(0);
-                Log.d(TAG2, "The Nth entry has located the highest value entry of: "+NthEntry);
-
-            } while(cursor.moveToNext());
-        }
-        db_read.close();
-
-        //This part then creates an entry in the database for the current session.
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues session_history = new ContentValues();
-        if(NthEntry >= 0)
-        {
-            session_history.put(Key_Table_id,  NthEntry+1);
-        } else {
-            session_history.put(Key_Table_id,  0);
-        }
-        long newRowId = db.insert(HISTORY_TABLE, null, session_history);
-        db.close();
-        storedCount = NthEntry;
-    }
-
-    public long addSessionData(SessionDataDetails data){
-
-        //Gets the data repository in write mode
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        //Create map with movie details to be inserted
-        ContentValues session_details = new ContentValues();
-        session_details.put(Key_Packet_id, data.getPacket_id());
-        session_details.put(Key_Mower_id, data.getKey_Mower_id());
-        session_details.put(Key_Session_id, data.getSession_id());
-        session_details.put(Key_Gps_x, data.getKey_Gps_x());
-        session_details.put(Key_Gps_y, data.getKey_Gps_y());
-        session_details.put(Key_Date, data.getKey_Date());
-        session_details.put(Key_Time, data.getKey_Time());
-        session_details.put(Key_Oil_Temp, data.getKey_Oil_Temp());
-        session_details.put(Key_Joystick, data.getKey_Joystick());
-        session_details.put(Key_Pitch_1, data.getKey_Pitch_1());
-        session_details.put(Key_Pitch_1, data.getKey_Pitch_2());
-        session_details.put(Key_Pitch_3, data.getKey_Pitch_3());
-        session_details.put(Key_Roll_1, data.getKey_Roll_1());
-        session_details.put(Key_Roll_2, data.getKey_Roll_2());
-        session_details.put(Key_Roll_3, data.getKey_Roll_3());
-        session_details.put(Key_Yaw_1, data.getKey_Yaw_1());
-        session_details.put(Key_Yaw_2, data.getKey_Yaw_2());
-        session_details.put(Key_Yaw_3, data.getKey_Yaw_3());
-
-        long newRowId = db.insert(TABLE_NAME, null, session_details);
-        db.close();
-        return newRowId;
-    }
-    public List getAllSessionData(){
-        List sessionDataList = new ArrayList();
-        //FOR THE ASCENDING/DESCENDING ORDER HERE IS IMPORTANT!!!
-        String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY "+Key_Session_id+" DESC";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        //if table has rows
-        if(cursor.moveToFirst()){
-            do{
-                SessionDataDetails sessionDetails = new SessionDataDetails();
-                sessionDetails.setSession_id(cursor.getInt(0));
-                sessionDetails.setKey_Mower_id(cursor.getInt(1));
-                sessionDetails.setKey_Time(cursor.getString(2));
-                sessionDetails.setKey_Gps_x(cursor.getDouble(3));
-                sessionDetails.setKey_Gps_y(cursor.getDouble(4));
-                sessionDetails.setKey_Joystick(cursor.getDouble(5));
-                sessionDetails.setKey_Oil_Temp(cursor.getDouble(6));
-                sessionDetails.setKey_Pitch_1(cursor.getDouble(7));
-                sessionDetails.setKey_Roll_1(cursor.getDouble(8));
-                sessionDetails.setKey_Yaw_1(cursor.getDouble(9));
-                sessionDetails.setKey_Pitch_2(cursor.getDouble(10));
-                sessionDetails.setKey_Roll_2(cursor.getDouble(11));
-                sessionDetails.setKey_Yaw_2(cursor.getDouble(12));
-                sessionDetails.setKey_Pitch_3(cursor.getDouble(13));
-                sessionDetails.setKey_Roll_3(cursor.getDouble(14));
-                sessionDetails.setKey_Yaw_3(cursor.getDouble(15));
-
-                sessionDataList.add(sessionDetails);
-            } while(cursor.moveToNext());
-        }
-        db.close();
-        return sessionDataList;
-    }
-
-    public SessionDataDetails getPacket(int session_id) {
-
-        SessionDataDetails dataPacket = new SessionDataDetails();
-        SQLiteDatabase db = this.getReadableDatabase();
-        //specify the columns to be fetched
-        String[] columns = {Key_Session_id, Key_Mower_id, Key_Time, Key_Gps_x, Key_Gps_y, Key_Joystick, Key_Oil_Temp, Key_Pitch_1, Key_Roll_1, Key_Yaw_1, Key_Pitch_2, Key_Roll_2, Key_Yaw_2, Key_Pitch_3, Key_Roll_3, Key_Yaw_3};
-        //Select condition
-        String selection = Key_Session_id + " = ?";
-        //Arguments for selection
-        String[] selectionArgs = {String.valueOf(Key_Session_id)};
-
-
-        Cursor cursor = db.query(TABLE_NAME, columns, selection,
-                selectionArgs, null, null, null);
-        if (null != cursor) {
-            cursor.moveToFirst();
-            dataPacket.setSession_id(cursor.getInt(0));
-            Log.d(TAG, "PACKET RETURNS for the Session ID: "+cursor.getInt(0));
-            dataPacket.setKey_Mower_id(cursor.getInt(1));
-            dataPacket.setKey_Time(cursor.getString(2));
-            dataPacket.setKey_Gps_x(cursor.getDouble(3));
-            Log.d(TAG, "PACKET RETURNS for the GPSX: "+cursor.getDouble(3));
-            dataPacket.setKey_Gps_y(cursor.getDouble(4));
-
-        }
-        db.close();
-        return dataPacket;
-
-    }
 
 }

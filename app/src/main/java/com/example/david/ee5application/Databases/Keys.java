@@ -33,6 +33,8 @@ public class Keys {
     public static final String session_data_Yaw_1 = "Yaw_1";
     public static final String session_data_Roll_1 = "Roll_1";
 
+    public static final String maximumSessionValue = "MAX(id_Session)";
+
 
 
 
