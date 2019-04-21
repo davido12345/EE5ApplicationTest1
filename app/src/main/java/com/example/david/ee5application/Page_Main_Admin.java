@@ -23,9 +23,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Administrator_mainpage extends AppCompatActivity {
+public class Page_Main_Admin extends AppCompatActivity {
     String TAG = "JSON REQUEST:";
 
+    //Buttons onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,7 @@ public class Administrator_mainpage extends AppCompatActivity {
         Map_checking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent map_check = new Intent(Administrator_mainpage.this,Maps.class);
+                Intent map_check = new Intent(Page_Main_Admin.this, Page_Map.class);
                 startActivity(map_check);
                 finish();
             }
@@ -58,6 +59,8 @@ public class Administrator_mainpage extends AppCompatActivity {
 
 
     }
+
+    //URL request to webpage over the internet
     public void JSonVolley(final String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -80,7 +83,7 @@ public class Administrator_mainpage extends AppCompatActivity {
                     }
 
                     //TRY NEW ACTIVITY LAUNCH HERE
-                    Intent data_check = new Intent(Administrator_mainpage.this,Data_checking_M_Name_List.class);
+                    Intent data_check = new Intent(Page_Main_Admin.this, Page_Select_Machine_Admin.class);
                     startActivity(data_check);
                     finish();
 
@@ -100,11 +103,9 @@ public class Administrator_mainpage extends AppCompatActivity {
     public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
         if(url.equals(Links.allMowerData)) {
             InfoArrays.type_Mower.add(jsonObject.getString(Keys.Type));
-            Log.d(TAG, "TYPE INPUT");
             InfoArrays.id_Mower.add(jsonObject.getInt(Keys.id_Mower));
             InfoArrays.id_workGroup.add(jsonObject.getInt(Keys.id_workGround));
             InfoArrays.name_Mower.add(jsonObject.getString(Keys.name_Mower));
-            Log.d(TAG, "Name INPUT");
 
         }else if(url.equals(Links.allSessionData)) {
 
@@ -133,6 +134,8 @@ public class Administrator_mainpage extends AppCompatActivity {
         //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
 
     }
+
+    //Empties existing arrayLists when we reopen this page to prevent duplicate data.
     public void clearOldMachineData(){
         InfoArrays.type_Mower.clear();
         InfoArrays.id_Mower.clear();

@@ -1,19 +1,12 @@
 package com.example.david.ee5application;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.icu.text.IDNA;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,14 +23,12 @@ import com.example.david.ee5application.Databases.Links;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
 
-import static com.example.david.ee5application.Data_checking_M_Name_List.machineSelected;
+import static com.example.david.ee5application.Page_Select_Machine_Admin.machineSelected;
 
-public class Data_checking_Session_List extends AppCompatActivity {
+public class Page_Select_Session_Admin extends AppCompatActivity {
     public ArrayList<String> SessionList = new ArrayList<>();
     String TAG = "Loading Page";
     public int machineID = machineSelected;
@@ -67,7 +58,7 @@ public class Data_checking_Session_List extends AppCompatActivity {
     }
 
 
-
+    //Fills ListView with information
     public void setListView(){
         SessionList.clear();
         for(int i =0; i<InfoArrays.id_MowerS.size(); i++) {
@@ -91,7 +82,7 @@ public class Data_checking_Session_List extends AppCompatActivity {
                     Log.d(TAG, "The machine selected is " + machineSelected);
                     String name = SessionList.get(position); //The name of the machine which is clicked.
                     Log.d(TAG, " How much data received: "+InfoArrays.id_MowerS.size());
-                    Intent intent = new Intent(Data_checking_Session_List.this, Arm_state_page.class);
+                    Intent intent = new Intent(Page_Select_Session_Admin.this, Page_Arm_State.class);
                     startActivity(intent);
                 }
             });
@@ -101,6 +92,7 @@ public class Data_checking_Session_List extends AppCompatActivity {
         //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, MachineList);
         //listView.setAdapter(arrayAdapter);
     }
+
     //Code to send a JSON volley to the DB
     public void JSonVolley(final String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -175,10 +167,6 @@ public class Data_checking_Session_List extends AppCompatActivity {
             InfoArrays.dateS.add(jsonObject.getString(Keys.session_date));
             InfoArrays.startTimeS.add(jsonObject.getString(Keys.session_startTime));
             InfoArrays.Duration.add(jsonObject.getString(Keys.session_Duration));
-            //Context context = MyApplication.getAppContext();
-            //TextView txtView = (TextView) ((Data_checking_Session_List)context).findViewById(R.id.dataStatus);
-            //txtView.setText("Data Received!");
-
         }
     }
 

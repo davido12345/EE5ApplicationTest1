@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Ventilator_data_page">
+    tools:context=".Page_Ventilator_Data">
 
     <TextView
         android:id="@+id/ventilator"

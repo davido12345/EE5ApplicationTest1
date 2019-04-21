@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
-public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
+//Class for the display of bluetooth devices in the listview.
+public class Component_List_Adapter_BT extends ArrayAdapter<BluetoothDevice> {
 
     private LayoutInflater mLayoutInflater;
     private ArrayList<BluetoothDevice> mDevices;
     private int  mViewResourceId;
 
-    public DeviceListAdapter(Context context, int tvResourceId, ArrayList<BluetoothDevice> devices){
+    public Component_List_Adapter_BT(Context context, int tvResourceId, ArrayList<BluetoothDevice> devices){
         super(context, tvResourceId,devices);
         this.mDevices = devices;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -11,17 +11,14 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.david.ee5application.BluetoothConnectionService.TAG2;
+import static com.example.david.ee5application.Routine_BT_Data_Receiver.TAG2;
 
-public class App_Database extends SQLiteOpenHelper {
+public class Database_Session_Storage extends SQLiteOpenHelper {
     //TO DO: PACKET IDS ARE NOT ENOUGH TO SELECT APPROPRIATELY, NEED PACKET ID AND SESSION ID.
     public static int storedCount;
-
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Session_Data";
-
     public static final String TABLE_NAME = "Session_Data";
-
     public static final String HISTORY_TABLE = "Data_History";
 
     public static final String Key_Packet_id = "Packet_id";
@@ -61,20 +58,22 @@ public class App_Database extends SQLiteOpenHelper {
 
     private static final String TAG = "DATABASE: ";
 
-    public App_Database(Context context) {
+    public Database_Session_Storage(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    //When new Object Database_Session_Storage Created
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_DATA_HISTORY);
         db.execSQL(SQL_CREATE_SESSION_DATA);
     }
 
+    //Drop the table while upgrading the database
+    // such as adding new column or changing existing constraint
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1){
-        //Drop the table while upgrading the database
-        // such as adding new column or changing existing constraint
+
         db.execSQL(SQL_DELETE_SESSION_DATA);
         this.onCreate(db);
     }
@@ -84,15 +83,15 @@ public class App_Database extends SQLiteOpenHelper {
         this.onUpgrade(db, oldVersion, newVersion);
     }
 
+        //Create a new Row entry in the datastructure that may be input into the database.
     public void addNewPacket(
             int packet_id, int Mower_id, String Date, String Time, double GPS_x, double GPS_y, double Joystick,
             double Oil_temp, double Pitch_1, double Roll_1, double Yaw_1, double Pitch_2,
             double Roll_2, double Yaw_2, double Pitch_3, double Roll_3, double Yaw_3
     )
     {
-        SessionDataDetails sessionDetails = new SessionDataDetails();
-        Log.d(TAG, "Packet_ID is: "+packet_id);
-
+        Data_Structure_Packet sessionDetails = new Data_Structure_Packet();
+            Log.d(TAG, "addPacket PacketID: "+packet_id);
             sessionDetails.setPacket_id(packet_id);
             sessionDetails.setKey_Mower_id((Mower_id));
             sessionDetails.setSession_id(storedCount);
@@ -111,12 +110,12 @@ public class App_Database extends SQLiteOpenHelper {
             sessionDetails.setKey_Yaw_1((Yaw_1));
             sessionDetails.setKey_Yaw_2((Yaw_2));
             sessionDetails.setKey_Yaw_3((Yaw_3));
-            Log.d("RECORDING", "We found Yaw_3 to be: "+Yaw_3);
             addSessionData(sessionDetails);
 
     }
 
-    public long addSessionData(SessionDataDetails data){
+    //Turn a formatted datastructure into a physical entry in the database
+    public long addSessionData(Data_Structure_Packet data){
 
         //Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
@@ -141,14 +140,13 @@ public class App_Database extends SQLiteOpenHelper {
         session_details.put(Key_Yaw_1, data.getKey_Yaw_1());
         session_details.put(Key_Yaw_2, data.getKey_Yaw_2());
         session_details.put(Key_Yaw_3, data.getKey_Yaw_3());
-        Log.d("RECORDING", "We found Yaw_3 to be  (ENTER DB): "+data.getKey_Yaw_3());
         long newRowId = db.insert(TABLE_NAME, null, session_details);
+        Log.d(TAG, "Inserting packet into database with rowID: "+newRowId);
         db.close();
-
-        Log.d("RECORDING", "ROW ID OF ADDED ENTRY IS: "+newRowId);
         return newRowId;
     }
 
+    //Retreives all Rows from the database.
     public List getAllSessionData() {
         List sessionDetailsList = new ArrayList();
         String selectQuery = "SELECT * FROM " + TABLE_NAME;
@@ -161,10 +159,10 @@ public class App_Database extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             //Loop through the table rows
             do {
-                SessionDataDetails sessionDetails = new SessionDataDetails();
+                Data_Structure_Packet sessionDetails = new Data_Structure_Packet();
                 sessionDetails.setPacket_id(cursor.getInt(0));
-                sessionDetails.setKey_Mower_id(cursor.getInt(1));
-                sessionDetails.setSession_id(cursor.getInt(2));
+                sessionDetails.setKey_Mower_id(cursor.getInt(2));
+                sessionDetails.setSession_id(cursor.getInt(1));
                 sessionDetails.setKey_Date(cursor.getString(3));
                 sessionDetails.setKey_Time(cursor.getString(4));
                 sessionDetails.setKey_Gps_x(cursor.getDouble(5));
@@ -189,9 +187,10 @@ public class App_Database extends SQLiteOpenHelper {
         return sessionDetailsList;
     }
 
-    public SessionDataDetails getSessionData(int PacketId) {
+    //Returns packet by ID
+    public Data_Structure_Packet getSessionData(int PacketId) {
 
-        SessionDataDetails sessionDetails = new SessionDataDetails();
+        Data_Structure_Packet sessionDetails = new Data_Structure_Packet();
         SQLiteDatabase db = this.getReadableDatabase();
         //specify the columns to be fetched
         String[] columns = {Key_Packet_id, Key_Mower_id, Key_Session_id, Key_Date, Key_Time, Key_Gps_x, Key_Gps_y, Key_Joystick, Key_Oil_Temp, Key_Pitch_1, Key_Roll_1, Key_Yaw_1, Key_Pitch_2, Key_Roll_2, Key_Yaw_2, Key_Pitch_3, Key_Roll_3, Key_Yaw_3};
@@ -230,7 +229,8 @@ public class App_Database extends SQLiteOpenHelper {
 
     }
 
-    public void updatePacket(SessionDataDetails data) {
+    //Allows us to update an existing packet
+    public void updatePacket(Data_Structure_Packet data) {
         SQLiteDatabase db = this.getWritableDatabase();
         String packetIds[] = {String.valueOf(data.getPacket_id())};
 
@@ -257,12 +257,15 @@ public class App_Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    //Deletes an existing row entry based on two constraints
     public void deletePacket(int packetId, int sessionId) {
         String packetIds[] = {String.valueOf(packetId), String.valueOf(sessionId)};
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, Key_Packet_id + " = ? AND " + Key_Session_id + " = ?", packetIds);
         db.close();
     }
+
+    //Creates a second table that monitors the number of different session entries.
     public void createHistoricLog()
     {
         //This query checks the existing table to see how many tables already exist in history.
@@ -276,7 +279,7 @@ public class App_Database extends SQLiteOpenHelper {
             do{
                 NthEntry = cursor.getInt(0);
                 Log.d(TAG2, "The Nth entry has located the highest value entry of: "+NthEntry);
-
+                storedCount = NthEntry;
             } while(cursor.moveToNext());
         }
         db_read.close();
@@ -292,8 +295,10 @@ public class App_Database extends SQLiteOpenHelper {
         }
         long newRowId = db.insert(HISTORY_TABLE, null, session_history);
         db.close();
-        storedCount = NthEntry;
+
     }
+
+    //This method is redundant, however can be used to find the highest rowID entry in the database
     public int checkMax()
     {
         //This query checks the existing table to see how many tables already exist in history.
@@ -315,6 +320,7 @@ public class App_Database extends SQLiteOpenHelper {
         //This part then creates an entry in the database for the current session.
         return NthEntry;
     }
+    //Returns the total number of entries in the database.
     public long getEntriesCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, TABLE_NAME);

@@ -3,7 +3,7 @@ package com.example.david.ee5application;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Joystick_data_page extends AppCompatActivity {
+public class Page_Joystick_Data extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

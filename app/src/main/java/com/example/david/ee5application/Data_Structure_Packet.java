@@ -1,6 +1,6 @@
 package com.example.david.ee5application;
 
-public class SessionDataDetails {
+public class Data_Structure_Packet {
 
 
     private int Packet_id;

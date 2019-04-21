@@ -22,22 +22,20 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
-public class BluetoothInit extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    private static final String TAG = "BluetoothInit";
+public class Page_Finding_Bluetooth_Device extends AppCompatActivity implements AdapterView.OnItemClickListener{
+    private static final String TAG = "Page_Finding_Bluetooth_Device";
 
     BluetoothAdapter mBluetoothAdapter;
 
-    BluetoothConnectionService mBluetoothConnection;
+    Routine_BT_Data_Receiver mBluetoothConnection;
 
-
-    private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     BluetoothDevice mBTDevice;
 
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
 
-    public DeviceListAdapter mDeviceListAdapter;
+    public Component_List_Adapter_BT mComponentListAdapterBT;
 
     ListView lvNewDevices;
 
@@ -68,10 +66,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
         }
     };
 
-    /**
-     * Broadcast Receiver for changes made to bluetooth states such as:
-     * 1) Discoverability mode on/off or expire.
-     */
+    //Broadcast recceiver for changes in the bluetooth state.
     private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
 
         @Override
@@ -109,10 +104,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
 
 
 
-    /**
-     * Broadcast Receiver for listing devices that are not yet paired
-     * -Executed by btnDiscover() method.
-     */
+   //Broadcast receiver that lists bluetooth devices that are not paired. Activated by button.
     private BroadcastReceiver mBroadcastReceiver3 = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -123,15 +115,13 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
                 BluetoothDevice device = intent.getParcelableExtra (BluetoothDevice.EXTRA_DEVICE);
                 mBTDevices.add(device);
                 Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
-                mDeviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, mBTDevices);
-                lvNewDevices.setAdapter(mDeviceListAdapter);
+                mComponentListAdapterBT = new Component_List_Adapter_BT(context, R.layout.device_adapter_view, mBTDevices);
+                lvNewDevices.setAdapter(mComponentListAdapterBT);
             }
         }
     };
 
-    /**
-     * Broadcast Receiver that detects bond state changes (Pairing status changes)
-     */
+    //Broadcast receiver that detects changes in the pairing state.
     private final BroadcastReceiver mBroadcastReceiver4 = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -171,6 +161,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
         //mBluetoothAdapter.cancelDiscovery();
     }
 
+    //OnCreate method responsible to connect automatically with the bluetooth device.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,15 +175,11 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
         //Broadcasts when bond state changes (ie:pairing)
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver4, filter);
-
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        lvNewDevices.setOnItemClickListener(BluetoothInit.this);
-
+        lvNewDevices.setOnItemClickListener(Page_Finding_Bluetooth_Device.this);
         enableDisableBT();
         //ENABLE DISCOVERY
         checkBTPermissions();
-
         mBluetoothAdapter.startDiscovery();
         IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mBroadcastReceiver3, discoverDevicesIntent);
@@ -221,7 +208,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
                             Log.d(TAG, "Connection Made");
                             mBTDevices.get(i).createBond();
                             mBTDevice = mBTDevices.get(i);
-                            mBluetoothConnection = new BluetoothConnectionService(BluetoothInit.this);
+                            mBluetoothConnection = new Routine_BT_Data_Receiver(Page_Finding_Bluetooth_Device.this);
 
                         }
                     }
@@ -229,7 +216,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
                     Context context = getApplicationContext();
                     Toast toast = Toast.makeText(context, "Bluetooth Connection Successful", Toast.LENGTH_SHORT);
                     toast.show();
-                    Intent Recording = new Intent(BluetoothInit.this, RecordingActivity.class);
+                    Intent Recording = new Intent(Page_Finding_Bluetooth_Device.this, Page_Running_Session.class);
                     startActivity(Recording);
                 }
 
@@ -240,22 +227,19 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
     }
 
     //create method for starting connection
-    //***remember the conncction will fail and app will crash if you haven't paired first
+    //the conncction will fail and app will crash if you haven't paired first
     public void startConnection(){
         startBTConnection(mBTDevice,MY_UUID_INSECURE);
     }
 
 
-    /**
-     * starting chat service method
-     */
+
     public void startBTConnection(BluetoothDevice device, UUID uuid){
         Log.d(TAG, "startBTConnection: Initializing RFCOM Bluetooth Connection.");
         mBluetoothConnection.startClient(device,uuid);
     }
 
-
-
+    //Self explanatory.
     public void enableDisableBT(){
         if(!mBluetoothAdapter.isEnabled()){
             Log.d(TAG, "enableDisableBT: enabling BT.");
@@ -267,13 +251,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
         }
     }
 
-
-
-
-
-    /**
-     * This method is required for all devices running API23+
-     */
+    //Checks permissions on API23+ Devices
     private void checkBTPermissions() {
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
             int permissionCheck = this.checkSelfPermission("Manifest.permission.ACCESS_FINE_LOCATION");
@@ -287,6 +265,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
         }
     }
 
+    //ListView clicking connection (unnecessary now)
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         //first cancel discovery because its very memory intensive.
@@ -305,7 +284,7 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
             mBTDevices.get(i).createBond();
 
             mBTDevice = mBTDevices.get(i);
-            mBluetoothConnection = new BluetoothConnectionService(BluetoothInit.this);
+            mBluetoothConnection = new Routine_BT_Data_Receiver(Page_Finding_Bluetooth_Device.this);
         }
     }
 }

@@ -16,18 +16,20 @@ public class Data_page extends AppCompatActivity {
         Button Temp = (Button)findViewById(R.id.T_Sensor_log);
         Button Ventilator = (Button)findViewById(R.id.Cooling_log);
 
+        //Temperature Sensor Data page button
         Temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent admin = new Intent(Data_page.this,Temperature_sensor_data_page.class);
+                Intent admin = new Intent(Data_page.this, Page_Temperature_Data.class);
                 startActivity(admin);
             }
         });
 
+        //Ventilator page button
         Ventilator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent admin = new Intent(Data_page.this,Ventilator_data_page.class);
+                Intent admin = new Intent(Data_page.this, Page_Ventilator_Data.class);
                 startActivity(admin);
             }
         });

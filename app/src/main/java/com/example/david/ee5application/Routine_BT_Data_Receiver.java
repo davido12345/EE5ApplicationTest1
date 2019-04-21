@@ -7,11 +7,6 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import com.example.david.ee5application.Databases.Links;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,63 +16,15 @@ import java.util.UUID;
 
 
 
-public class BluetoothConnectionService{
+public class Routine_BT_Data_Receiver {
     public static boolean end = false;
 
     public static int storedCount = 0;
     public static int lastRecord;
 
     public static final String TAG2 = "QUAIL: ";
-
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Session_Data";
-
-    public static final String TABLE_NAME = "Session_Data";
-
-    public static final String HISTORY_TABLE = "Data_History";
-
-    public static final String Key_Packet_id = "Packet_id";
-    public static final String Key_Session_id = "Session_id";
-    public static final String Key_Mower_id = "Mower_id";
-    public static final String Key_Date = "Date";
-    public static final String Key_Time = "Time";
-    public static final String Key_Gps_x = "Gps_x";
-    public static final String Key_Gps_y = "Gps_y";
-    public static final String Key_Joystick = "Joystick";
-    public static final String Key_Oil_Temp = "Oil_temp";
-    public static final String Key_Pitch_1 = "Pitch_1";
-    public static final String Key_Yaw_1 = "Yaw_1";
-    public static final String Key_Roll_1 = "Roll_1";
-    public static final String Key_Pitch_2 = "Pitch_2";
-    public static final String Key_Yaw_2 = "Yaw_2";
-    public static final String Key_Roll_2 = "Roll_2";
-    public static final String Key_Pitch_3 = "Pitch_3";
-    public static final String Key_Yaw_3 = "Yaw_3";
-    public static final String Key_Roll_3 = "Roll_3";
-
-    //Table to store all historic sessions Recorded.
-    public static final String Key_Table_id = "Table_id";
-    private static final String SQL_CREATE_DATA_HISTORY =
-            "CREATE TABLE Data_History("+Key_Table_id+" INTEGER PRIMARY KEY);";
-
-    private static final String SQL_CREATE_SESSION_DATA =
-            "CREATE TABLE "+TABLE_NAME+"(" +Key_Packet_id + " INTEGER," +
-                    Key_Session_id + " INTEGER, " + Key_Mower_id + " INTEGER, " +
-                    Key_Date + " TEXT, "+Key_Time+" TEXT, "+Key_Gps_x+" REAL, "+Key_Gps_y+" REAL, "+
-                    Key_Joystick+" REAL, "+Key_Oil_Temp+" REAL, "+
-                    Key_Pitch_1+" REAL, "+Key_Roll_1+" REAL, "+ Key_Yaw_1+" REAL, "+
-                    Key_Pitch_2+" REAL, "+Key_Roll_2+" REAL, "+ Key_Yaw_2+" REAL, "+
-                    Key_Pitch_3+" REAL, "+Key_Roll_3+" REAL, "+ Key_Yaw_3+" REAL);";
-    private static final String SQL_DELETE_SESSION_DATA = "DROP TABLE IF EXISTS "+TABLE_NAME;
-
-
-
-
-
     private static final String TAG = "BluetoothConnectionServ";
-    private static String STRING_EMPTY = "";
     private static final String appName = "MYAPP";
-
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("4ca7ec2b-ef6e-405e-b595-87a0b55226e7");
 
@@ -85,7 +32,6 @@ public class BluetoothConnectionService{
     Context mContext;
 
     private AcceptThread mInsecureAcceptThread;
-
     private ConnectThread mConnectThread;
     private BluetoothDevice mmDevice;
     private UUID deviceUUID;
@@ -93,7 +39,7 @@ public class BluetoothConnectionService{
 
     private ConnectedThread mConnectedThread;
 
-    public BluetoothConnectionService(Context context) {
+    public Routine_BT_Data_Receiver(Context context) {
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         start();
@@ -305,7 +251,7 @@ public class BluetoothConnectionService{
             byte[] buffer = new byte[1024];  // buffer store for the stream
             int packet_id = 0;
             int bytes; // bytes returned from read()
-            App_Database db = new App_Database(mContext);
+            Database_Session_Storage db = new Database_Session_Storage(mContext);
             db.createHistoricLog();
             // Keep listening to the InputStream until an exception occurs
             while (end == false) {
@@ -390,7 +336,7 @@ public class BluetoothConnectionService{
                     Log.d(TAG, "MOWER ID: " + Mower_id);
                     Log.d(TAG, "Time: " + Time);
                     Log.d(TAG, "Yaw_3: " + Yaw_3);
-                    db.addNewPacket(packet_id, Driver_mainpage.machineID, Date, Time, GPS_x, GPS_y, Joystick, Oil_temp, Pitch_1, Roll_1, Yaw_1, Pitch_2, Roll_2, Yaw_2, Pitch_3, Roll_3, Yaw_3);
+                    db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, Time, GPS_x, GPS_y, Joystick, Oil_temp, Pitch_1, Roll_1, Yaw_1, Pitch_2, Roll_2, Yaw_2, Pitch_3, Roll_3, Yaw_3);
                     Log.d(TAG, "Packet Data of the Time entered as: "+db.getSessionData(packet_id).getKey_Time());
                     Log.d(TAG, "Packet addition was successful with packet ID = "+packet_id);
                     Log.d(TAG, "Session Data received GPS_X = " + db.getSessionData(0).getKey_Time());
@@ -451,25 +397,6 @@ public class BluetoothConnectionService{
         mConnectedThread.write(out);
     }
     //Not used right now
-    /*public static String readUntilChar(InputStream stream, char target) {
-        StringBuilder sb = new StringBuilder();
-
-        try {
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(stream));
-            char a;
-            while ((a = (char) buffer.read()) != '#') {
-                char c = (char) a;
-                if (c == target)
-                    break;
-                sb.append(c);
-            }
-            System.out.println(sb.toString());
-        } catch (IOException e) {
-        }
-        return sb.toString();
-    }
-
-*/
 
 
 }

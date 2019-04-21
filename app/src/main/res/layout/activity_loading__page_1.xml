@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Data_checking_Session_List">
+    tools:context=".Page_Select_Session_Admin">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -1,6 +1,6 @@
 package com.example.david.ee5application;
 
-public class HistoricSessionData {
+public class Database_Historic_Sessions {
     public int getRecord_id() {
         return record_id;
     }

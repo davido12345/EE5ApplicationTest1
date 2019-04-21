@@ -24,9 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.example.david.ee5application.Data_checking_M_Name_List.machineSelected;
+import static com.example.david.ee5application.Page_Select_Machine_Admin.machineSelected;
 
-public class Arm_state_page extends AppCompatActivity {
+public class Page_Arm_State extends AppCompatActivity {
     int machineID = machineSelected;
     String queryURL = Links.specificSessionsGPS+machineID;
     String TAG = "ArmStatePage: ";
@@ -51,7 +51,7 @@ public class Arm_state_page extends AppCompatActivity {
             }
         });
     }
-
+    //Sends URL queries over the internet
     public void JSonVolley(final String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -74,7 +74,7 @@ public class Arm_state_page extends AppCompatActivity {
                     }
 
                     //TRY NEW ACTIVITY LAUNCH HERE
-                    Intent Map = new Intent(Arm_state_page.this,Maps.class);
+                    Intent Map = new Intent(Page_Arm_State.this, Page_Map.class);
                     startActivity(Map);
                     finish();
 
@@ -90,6 +90,7 @@ public class Arm_state_page extends AppCompatActivity {
         queue.add(jsonArrayRequest);
     }
 
+    //Decodes received GPS information
     public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
         if (url.equals(Links.allMowerData)) {
 
@@ -107,6 +108,8 @@ public class Arm_state_page extends AppCompatActivity {
         }
         //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
     }
+
+    //Empties existing data in the arraylists to prevent duplicates.
     public void clearOldSessData(){
         InfoArrays.GpsLocationsX.clear();
         InfoArrays.GpsLocationsY.clear();

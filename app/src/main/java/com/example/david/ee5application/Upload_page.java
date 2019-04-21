@@ -24,7 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.example.david.ee5application.Driver_mainpage.machineID;
+import static com.example.david.ee5application.Page_Main_Driver.machineID;
 
 public class Upload_page extends AppCompatActivity {
     public String TAG = "UPLOAD PAGE:";
@@ -53,7 +53,7 @@ public class Upload_page extends AppCompatActivity {
 
             //PART ONE, WITH THE RELEVANT MACHINE ID CHECK THE SESSIONS IN THE DATABASE TO SEE IF THE SESSION IDs NEED TO BE UPDATED IN APP.
 
-            App_Database db = new App_Database(context);
+            Database_Session_Storage db = new Database_Session_Storage(context);
             int maximumTableStored = db.checkMax();
             JSonVolley(Links.specificMowerMax+machineID);
             //SOME KIND OF LOOP:
@@ -130,20 +130,20 @@ public class Upload_page extends AppCompatActivity {
             InfoArrays.maxSession = jsonObject.getInt(Keys.maximumSessionValue);
             Log.d(TAG, "Received from DB MaxSession = "+jsonObject.getInt(Keys.maximumSessionValue));
             maxSessionInDatabase = jsonObject.getInt(Keys.maximumSessionValue);
-            App_Database db = new App_Database(mContext);
+            Database_Session_Storage db = new Database_Session_Storage(mContext);
             long dbEntries = db.getEntriesCount();
             Log.d(TAG,"dbEntries are equal to: "+dbEntries);
             int startpoint = db.getAllSessionData().size();
 
             for(int i = 0;  i<startpoint; i++) {
                 //WORKS TO FETCH RECORDS!!!
-                SessionDataDetails item = (SessionDataDetails) db.getAllSessionData().get(i);
+                Data_Structure_Packet item = (Data_Structure_Packet) db.getAllSessionData().get(i);
                 Log.d("SIZE","dbEntries are equal to: "+db.getAllSessionData().size());
                 int sessionId = item.getSession_id();
 
                 //item.setSession_id(sessionId + maxSessionInDatabase);
                /* db.deletePacket(packet_Id, sessionId);
-                db.addNewPacket(packet_Id, Driver_mainpage.machineID, item.getKey_Date(), item.getKey_Time(), item.getKey_Gps_x(), item.getKey_Gps_y(), item.getKey_Joystick(),
+                db.addNewPacket(packet_Id, Page_Main_Driver.machineID, item.getKey_Date(), item.getKey_Time(), item.getKey_Gps_x(), item.getKey_Gps_y(), item.getKey_Joystick(),
                         item.getKey_Oil_Temp(), item.getKey_Pitch_1(), item.getKey_Roll_1(), item.getKey_Yaw_1(), item.getKey_Pitch_2(),
                         item.getKey_Roll_2(), item.getKey_Yaw_2(), item.getKey_Pitch_3(), item.getKey_Roll_3(), item.getKey_Yaw_3()
                );*/
@@ -154,9 +154,10 @@ public class Upload_page extends AppCompatActivity {
                 int sessionIDOfficial = sessionId+maxSessionInDatabase;
                 if(sessionIDOfficial == maxSessionInDatabase){
                     sessionIDOfficial++;
+                    Log.d(TAG, "EXTRA INDEX");
                 }
                 Log.d(TAG, "UPLOADING A DATA!");
-                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+(sessionIDOfficial)+"&id_Mower="+Driver_mainpage.machineID+
+                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+(sessionIDOfficial)+"&id_Mower="+ Page_Main_Driver.machineID+
                         "&time_SessionData="+item.getKey_Time()+"&Gps_x="+item.getKey_Gps_x()+"&Gps_y="+item.getKey_Gps_x()+"&Joystick="+item.getKey_Joystick()+
                         "&Oil_temp="+item.getKey_Oil_Temp()+"&Pitch_1="+item.getKey_Pitch_1()+"&Roll_1="+item.getKey_Roll_1()+
                         "&Yaw_1="+item.getKey_Yaw_1()+"&Pitch_2="+item.getKey_Pitch_2()+"&Roll_2="+item.getKey_Roll_2()+"&Yaw_2="+item.getKey_Yaw_2()+

@@ -21,7 +21,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 
-public class Maps extends FragmentActivity implements OnMapReadyCallback {
+public class Page_Map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     String TAG = "Google Map";
@@ -37,7 +37,7 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
         Log.d(TAG,"The arraylist contains: "+ InfoArrays.GpsLocations.size());
     }
 
-
+    //Comment from google API:
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -52,15 +52,16 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        //Adds all the marker coordinates from the arraylist onto the map
         for (int i=0; i<InfoArrays.GpsLocations.size(); i++)
         {
-
             LatLng temp = InfoArrays.GpsLocations.get(i);
             Log.d(TAG, "The value of the coordinate added: "+temp);
             Marker newMarker = mMap.addMarker(new MarkerOptions().position(temp));
             MarkerList.add(newMarker);
         }
+
+        //Draws a polyline between all the coordinates in order to draw the route of the mower.
         PolylineOptions rectOptions = new PolylineOptions().color(Color.RED).width(2);
         for(int i = 0; i<MarkerList.size(); i++) {
             LatLng temp = InfoArrays.GpsLocations.get(i);
@@ -68,6 +69,9 @@ public class Maps extends FragmentActivity implements OnMapReadyCallback {
         }
         Polyline polyline = mMap.addPolyline(rectOptions);
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(InfoArrays.GpsLocationsX.get(0), InfoArrays.GpsLocationsY.get(0)), 12.0f));
+        //Zooms camera to relevant location so user is not looking at the whole earth.
+        if(InfoArrays.GpsLocations.size()>0) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(InfoArrays.GpsLocationsX.get(0), InfoArrays.GpsLocationsY.get(0)), 12.0f));
+        }
     }
 }

@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
+         Google Page_Map Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -22,28 +22,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RecordingActivity"
+            android:name=".Page_Running_Session"
             android:label="@string/title_activity_recording"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".LoginPageActivity">
+        <activity android:name=".Page_Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Driver_mainpage" />
+        <activity android:name=".Page_Main_Driver" />
         <activity android:name=".Upload_page" />
-        <activity android:name=".Arm_state_page" />
-        <activity android:name=".Administrator_mainpage" />
-        <activity android:name=".Data_checking_M_Name_List" />
+        <activity android:name=".Page_Arm_State" />
+        <activity android:name=".Page_Main_Admin" />
+        <activity android:name=".Page_Select_Machine_Admin" />
         <activity android:name=".Data_page" />
-        <activity android:name=".Joystick_data_page" />
-        <activity android:name=".Temperature_sensor_data_page" />
-        <activity android:name=".Ventilator_data_page" />
-        <activity android:name=".BluetoothInit" />
+        <activity android:name=".Page_Joystick_Data" />
+        <activity android:name=".Page_Temperature_Data" />
+        <activity android:name=".Page_Ventilator_Data" />
+        <activity android:name=".Page_Finding_Bluetooth_Device" />
         <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
+             The API key for Google Page_Map-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
@@ -58,10 +58,10 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".Maps"
+            android:name=".Page_Map"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".Data_checking_Session_List"
+            android:name=".Page_Select_Session_Admin"
             android:label="@string/title_activity_loading__page_1"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

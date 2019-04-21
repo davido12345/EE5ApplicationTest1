@@ -7,8 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class Driver_mainpage extends AppCompatActivity {
+public class Page_Main_Driver extends AppCompatActivity {
+
+    //IMPORTANT TO COLLECT ALL OF THESE!
+    //*************************************************************************************************************
     public static final int machineID = 2; // SET IN THE CONFIG FILE.
+    //*************************************************************************************************************
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,25 +24,28 @@ public class Driver_mainpage extends AppCompatActivity {
         Button ConnectToBluetooth = (Button)findViewById(R.id.buttonBluetooth);
 
         Context context = getApplicationContext();
-        App_Database db = new App_Database(context);
+        Database_Session_Storage db = new Database_Session_Storage(context);
         if(db.getEntriesCount() == 24)
         {
             getApplicationContext().deleteDatabase("Session_Data");
         }
 
+        //Button to open the upload class
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent data_upload = new Intent(Driver_mainpage.this,Upload_page.class);
+                Intent data_upload = new Intent(Page_Main_Driver.this,Upload_page.class);
                 data_upload.putExtra("Start",1);
                 startActivity(data_upload);
 
             }
         });
+
+        //Button to open Bluetooth pairing
         ConnectToBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent blueToothPairing = new Intent(Driver_mainpage.this, BluetoothInit.class);
+                Intent blueToothPairing = new Intent(Page_Main_Driver.this, Page_Finding_Bluetooth_Device.class);
                 startActivity(blueToothPairing);
 
             }

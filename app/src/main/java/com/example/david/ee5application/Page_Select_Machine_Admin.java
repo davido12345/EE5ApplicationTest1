@@ -28,7 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Data_checking_M_Name_List extends AppCompatActivity {
+public class Page_Select_Machine_Admin extends AppCompatActivity {
     public static int machineSelected;
     ListView listView;
     String TAG = "David: ";
@@ -71,6 +71,7 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
         });
     }
 
+    //Inits List View
     public void setListView(){
         for(int i =0; i<InfoArrays.name_Mower.size(); i++) {
             Log.d(TAG, "Adding ArrayList Elements");
@@ -81,6 +82,7 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
         //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, MachineList);
         //listView.setAdapter(arrayAdapter);
     }
+
     //Code to send a JSON volley to the DB
     public void JSonVolley(final String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -105,7 +107,7 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
                     }
 
                     //TRY HERE
-                    Intent intent = new Intent(Data_checking_M_Name_List.this, Data_checking_Session_List.class);
+                    Intent intent = new Intent(Page_Select_Machine_Admin.this, Page_Select_Session_Admin.class);
                     startActivity(intent);
                     //finish();
 
@@ -125,11 +127,9 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
     public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
         if (url.equals(Links.allMowerData)) {
             InfoArrays.type_Mower.add(jsonObject.getString(Keys.Type));
-            Log.d(TAG, "TYPE INPUT");
             InfoArrays.id_Mower.add(jsonObject.getInt(Keys.id_Mower));
             InfoArrays.id_workGroup.add(jsonObject.getInt(Keys.id_workGround));
             InfoArrays.name_Mower.add(jsonObject.getString(Keys.name_Mower));
-            Log.d(TAG, "Name INPUT");
 
         } else if (url.equals(Links.allSessionData)) {
 
@@ -157,6 +157,8 @@ public class Data_checking_M_Name_List extends AppCompatActivity {
         }
         //Log.d(TAG, "getting size :" + InfoArrays.firstNames.size());
     }
+
+    //Deletes existing data in arraylist to prevent duplicates.
     public void clearOldSessData(){
         InfoArrays.id_sess.clear();
         InfoArrays.id_MowerS.clear();
