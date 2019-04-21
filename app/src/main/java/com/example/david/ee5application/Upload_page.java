@@ -108,7 +108,6 @@ public class Upload_page extends AppCompatActivity {
 
                     //TRY HERE
 
-
                     //finish();
 
                 } catch (JSONException e) {
@@ -127,63 +126,47 @@ public class Upload_page extends AppCompatActivity {
     public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
 
         if (url.equals(Links.specificMowerMax+machineID)) {
+
             InfoArrays.maxSession = jsonObject.getInt(Keys.maximumSessionValue);
             Log.d(TAG, "Received from DB MaxSession = "+jsonObject.getInt(Keys.maximumSessionValue));
             maxSessionInDatabase = jsonObject.getInt(Keys.maximumSessionValue);
-
-
-            //UPDATE ALL THE SESSION_ID VALUES
-            //Then pushes all data into the database
             App_Database db = new App_Database(mContext);
             long dbEntries = db.getEntriesCount();
             Log.d(TAG,"dbEntries are equal to: "+dbEntries);
-            //For a newly initialized database
+            int startpoint = db.getAllSessionData().size();
 
-            for(int i = 0;  i<dbEntries; i++)
-            {
+            for(int i = 0;  i<startpoint; i++) {
                 //WORKS TO FETCH RECORDS!!!
                 SessionDataDetails item = (SessionDataDetails) db.getAllSessionData().get(i);
+                Log.d("SIZE","dbEntries are equal to: "+db.getAllSessionData().size());
                 int sessionId = item.getSession_id();
-                int packet_Id = item.getPacket_id();
-                item.setSession_id(sessionId+maxSessionInDatabase);
-                db.deletePacket(packet_Id, sessionId);
-                db.addNewPacket(packet_Id , machineID, item.getKey_Date(), item.getKey_Time(), item.getKey_Gps_x(), item.getKey_Gps_y(), item.getKey_Joystick(),
-                    item.getKey_Oil_Temp(), item.getKey_Pitch_1(), item.getKey_Roll_1(), item.getKey_Yaw_1(), item.getKey_Pitch_2(),
-                    item.getKey_Roll_2(), item.getKey_Yaw_2(), item.getKey_Pitch_3(), item.getKey_Roll_3(), item.getKey_Yaw_3()
-    );
+
+                //item.setSession_id(sessionId + maxSessionInDatabase);
+               /* db.deletePacket(packet_Id, sessionId);
+                db.addNewPacket(packet_Id, Driver_mainpage.machineID, item.getKey_Date(), item.getKey_Time(), item.getKey_Gps_x(), item.getKey_Gps_y(), item.getKey_Joystick(),
+                        item.getKey_Oil_Temp(), item.getKey_Pitch_1(), item.getKey_Roll_1(), item.getKey_Yaw_1(), item.getKey_Pitch_2(),
+                        item.getKey_Roll_2(), item.getKey_Yaw_2(), item.getKey_Pitch_3(), item.getKey_Roll_3(), item.getKey_Yaw_3()
+               );*/
+
+
                 Log.d(TAG, "USING LISTS COMPONENT OF GPS_X: "+item.getKey_Gps_x());
                 Log.d(TAG, "SESSION ID!: "+item.getSession_id());
-
+                int sessionIDOfficial = sessionId+maxSessionInDatabase;
+                if(sessionIDOfficial == maxSessionInDatabase){
+                    sessionIDOfficial++;
+                }
                 Log.d(TAG, "UPLOADING A DATA!");
-                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+item.getSession_id()+"&id_Mower="+Driver_mainpage.machineID+
+                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+(sessionIDOfficial)+"&id_Mower="+Driver_mainpage.machineID+
                         "&time_SessionData="+item.getKey_Time()+"&Gps_x="+item.getKey_Gps_x()+"&Gps_y="+item.getKey_Gps_x()+"&Joystick="+item.getKey_Joystick()+
                         "&Oil_temp="+item.getKey_Oil_Temp()+"&Pitch_1="+item.getKey_Pitch_1()+"&Roll_1="+item.getKey_Roll_1()+
                         "&Yaw_1="+item.getKey_Yaw_1()+"&Pitch_2="+item.getKey_Pitch_2()+"&Roll_2="+item.getKey_Roll_2()+"&Yaw_2="+item.getKey_Yaw_2()+
                         "&Pitch_3="+item.getKey_Pitch_3()+"&Roll_3="+item.getKey_Roll_3()+"&Yaw_3="+item.getKey_Yaw_3()+"";
 
                 JSonVolley(insertPacketToDataBase);
-
             }
-            db.close();
+            getApplicationContext().deleteDatabase("Session_Data");
 
-            //WORKING INSERT BUT INSERTS BLANK!
-            //DEACTIVATE TO NOT FILL DATABASE WITH JUNK
-            /*
-            for(int i=0; i<db.getEntriesCount(); i++)
-            {
-                Log.d(TAG, "UPLOADING A DATA!");
-                SessionDataDetails selection = db.getSessionData(i);
-                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?" +
-                        "id_SessionData="+selection.getSession_id()+"&id_Session="+selection.getSession_id()+"&id_Mower="+selection.getKey_Mower_id()+
-                        "&time_SessionData="+selection.getKey_Time()+"&Gps_x="+selection.getKey_Gps_x()+"&Gps_y="+selection.getKey_Gps_x()+"&Joystick="+selection.getKey_Joystick()+
-                        "&Oil_temp="+selection.getKey_Oil_Temp()+"&Pitch_1="+selection.getKey_Pitch_1()+"&Roll_1="+selection.getKey_Roll_1()+
-                        "&Yaw_1="+selection.getKey_Yaw_1()+"&Pitch_2="+selection.getKey_Pitch_2()+"&Roll_2="+selection.getKey_Roll_2()+"&Yaw_2="+selection.getKey_Yaw_2()+
-                        "&Pitch_3="+selection.getKey_Pitch_3()+"&Roll_3="+selection.getKey_Roll_3()+"&Yaw_3="+selection.getKey_Yaw_3()+"";
-
-                JSonVolley(insertPacketToDataBase);
-
-                }*/
-            }
+        }
 
 
         }

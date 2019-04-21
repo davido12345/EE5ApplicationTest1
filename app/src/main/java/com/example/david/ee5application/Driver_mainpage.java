@@ -1,5 +1,6 @@
 package com.example.david.ee5application;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,12 @@ public class Driver_mainpage extends AppCompatActivity {
         Button Upload = (Button)findViewById(R.id.UploadButton);
         Button ConnectToBluetooth = (Button)findViewById(R.id.buttonBluetooth);
 
+        Context context = getApplicationContext();
+        App_Database db = new App_Database(context);
+        if(db.getEntriesCount() == 24)
+        {
+            getApplicationContext().deleteDatabase("Session_Data");
+        }
 
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -24,7 +24,7 @@ import java.util.UUID;
 public class BluetoothConnectionService{
     public static boolean end = false;
 
-    public static int storedCount;
+    public static int storedCount = 0;
     public static int lastRecord;
 
     public static final String TAG2 = "QUAIL: ";
