@@ -5,29 +5,27 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
+import com.example.david.ee5application.Databases.Links;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
 
 
 public class BluetoothConnectionService{
+    public static boolean end = false;
+
     public static int storedCount;
+    public static int lastRecord;
 
     public static final String TAG2 = "QUAIL: ";
 
@@ -178,6 +176,8 @@ public class BluetoothConnectionService{
             deviceUUID = uuid;
         }
 
+
+
         public void run(){
             BluetoothSocket tmp = null;
             Log.i(TAG, "RUN mConnectThread ");
@@ -305,10 +305,10 @@ public class BluetoothConnectionService{
             byte[] buffer = new byte[1024];  // buffer store for the stream
             int packet_id = 0;
             int bytes; // bytes returned from read()
-            In_App_Database db = new In_App_Database(mContext);
+            App_Database db = new App_Database(mContext);
             db.createHistoricLog();
             // Keep listening to the InputStream until an exception occurs
-            while (true) {
+            while (end == false) {
                 // Read from the InputStream
                 try {
                     try {
@@ -321,22 +321,22 @@ public class BluetoothConnectionService{
                     String incomingMessage = new String(buffer, 0, bytes);
 
 
-                    String Mower_id="";
+                    int Mower_id=0;
                     String Date="";
                     String Time="";
-                    String GPS_x="";
-                    String GPS_y="";
-                    String Joystick="";
-                    String Oil_temp="";
-                    String Pitch_1="";
-                    String Roll_1="";
-                    String Yaw_1="";
-                    String Pitch_2="";
-                    String Roll_2="";
-                    String Yaw_2="";
-                    String Pitch_3="";
-                    String Roll_3="";
-                    String Yaw_3="";
+                    double GPS_x=0;
+                    double GPS_y=0;
+                    double Joystick=0;
+                    double Oil_temp=0;
+                    double Pitch_1=0;
+                    double Roll_1=0;
+                    double Yaw_1=0;
+                    double Pitch_2=0;
+                    double Roll_2=0;
+                    double Yaw_2=0;
+                    double Pitch_3=0;
+                    double Roll_3=0;
+                    double Yaw_3=0;
 
                     Log.d(TAG, "Input Stream: "+incomingMessage);
 
@@ -349,50 +349,53 @@ public class BluetoothConnectionService{
                         if(first.contains("%") && first.contains(">")){
                             String[] separated = first.split("\\*");
                             Log.d(TAG, "WE DID THIS 1");
-                            Mower_id =  separated[1];
+                            Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
                             Time =  separated[3];
-                            GPS_x = separated[4];
-                            GPS_y = separated[5];
-                            Joystick = separated[6];
-                            Oil_temp = separated[7];
-                            Pitch_1 = separated[8];
-                            Roll_1 = separated[9];
-                            Yaw_1 = separated[10];
-                            Pitch_2 = separated[11];
-                            Roll_2 = separated[12];
-                            Yaw_2 = separated[13];
-                            Pitch_3 = separated[14];
-                            Roll_3 = separated[15];
-                            Yaw_3 = separated[16];
+                            GPS_x = Double.parseDouble(separated[4]);
+                            GPS_y =  Double.parseDouble(separated[5]);
+                            Joystick =  Double.parseDouble(separated[6]);
+                            Oil_temp =  Double.parseDouble(separated[7]);
+                            Pitch_1 =  Double.parseDouble(separated[8]);
+                            Roll_1 =  Double.parseDouble(separated[9]);
+                            Yaw_1 =  Double.parseDouble(separated[10]);
+                            Pitch_2 =  Double.parseDouble(separated[11]);
+                            Roll_2 =  Double.parseDouble(separated[12]);
+                            Yaw_2 =  Double.parseDouble(separated[13]);
+                            Pitch_3 =  Double.parseDouble(separated[14]);
+                            Roll_3 =  Double.parseDouble(separated[15]);
+                            Yaw_3 =  Double.parseDouble(separated[16]);
                          } else if (second.contains("%")){
                             String[] separated = second.split("\\*");
                             Log.d(TAG, "WE DID THIS 2");
-                            Mower_id =  separated[1];
+                            Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
                             Time =  separated[3];
-                            GPS_x = separated[4];
-                            GPS_y = separated[5];
-                            Joystick = separated[6];
-                            Oil_temp = separated[7];
-                            Pitch_1 = separated[8];
-                            Roll_1 = separated[9];
-                            Yaw_1 = separated[10];
-                            Pitch_2 = separated[11];
-                            Roll_2 = separated[12];
-                            Yaw_2 = separated[13];
-                            Pitch_3 = separated[14];
-                            Roll_3 = separated[15];
-                            Yaw_3 = separated[16];
+                            GPS_x = Double.parseDouble(separated[4]);
+                            GPS_y =  Double.parseDouble(separated[5]);
+                            Joystick =  Double.parseDouble(separated[6]);
+                            Oil_temp =  Double.parseDouble(separated[7]);
+                            Pitch_1 =  Double.parseDouble(separated[8]);
+                            Roll_1 =  Double.parseDouble(separated[9]);
+                            Yaw_1 =  Double.parseDouble(separated[10]);
+                            Pitch_2 =  Double.parseDouble(separated[11]);
+                            Roll_2 =  Double.parseDouble(separated[12]);
+                            Yaw_2 =  Double.parseDouble(separated[13]);
+                            Pitch_3 =  Double.parseDouble(separated[14]);
+                            Roll_3 =  Double.parseDouble(separated[15]);
+                            Yaw_3 =  Double.parseDouble(separated[16]);
                         } else {
                             Log.d(TAG, "WE DID THIS NONE!");
                         }
                     Log.d(TAG, "MOWER ID: " + Mower_id);
                     Log.d(TAG, "Time: " + Time);
                     Log.d(TAG, "Yaw_3: " + Yaw_3);
-                    db.addNewPacket(packet_id, Mower_id, Date, Time, GPS_x, GPS_y, Joystick, Oil_temp, Pitch_1, Roll_1, Yaw_1, Pitch_2, Roll_2, Yaw_2, Pitch_3, Roll_3, Yaw_3);
-                    Log.d(TAG, "Packet addition was successful");
+                    db.addNewPacket(packet_id, Driver_mainpage.machineID, Date, Time, GPS_x, GPS_y, Joystick, Oil_temp, Pitch_1, Roll_1, Yaw_1, Pitch_2, Roll_2, Yaw_2, Pitch_3, Roll_3, Yaw_3);
+                    Log.d(TAG, "Packet Data of the Time entered as: "+db.getSessionData(packet_id).getKey_Time());
+                    Log.d(TAG, "Packet addition was successful with packet ID = "+packet_id);
+                    Log.d(TAG, "Session Data received GPS_X = " + db.getSessionData(0).getKey_Time());
                     packet_id++;
+                    lastRecord = packet_id;
                     //getPacket(1);
 
 
@@ -400,6 +403,8 @@ public class BluetoothConnectionService{
                     Log.e(TAG, "write: Error reading Input Stream. " + e.getMessage() );
                     break;
                 }
+
+
             }
         }
 

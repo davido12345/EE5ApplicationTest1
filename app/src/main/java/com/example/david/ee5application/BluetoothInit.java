@@ -251,7 +251,6 @@ public class BluetoothInit extends AppCompatActivity implements AdapterView.OnIt
      */
     public void startBTConnection(BluetoothDevice device, UUID uuid){
         Log.d(TAG, "startBTConnection: Initializing RFCOM Bluetooth Connection.");
-
         mBluetoothConnection.startClient(device,uuid);
     }
 

@@ -25,6 +25,7 @@ public class RecordingActivity extends AppCompatActivity {
         endActivity.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                BluetoothConnectionService.end = true;
                 Intent data_check = new Intent(RecordingActivity.this,  Driver_mainpage.class);
                 startActivity(data_check);
                 Context context = getApplicationContext();

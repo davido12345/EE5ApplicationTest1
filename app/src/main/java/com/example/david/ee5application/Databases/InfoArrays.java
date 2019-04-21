@@ -32,7 +32,7 @@ public class InfoArrays {
     public static ArrayList<Double> Yaw_1SD = new ArrayList<Double>();
     public static ArrayList<Double> Roll_1SD = new ArrayList<Double>();
 
-
+    public static int maxSession = 0;
 
     public static ArrayList<Integer> id_sess = new ArrayList<Integer>();
     public static ArrayList<Integer> id_MowerS = new ArrayList<Integer>();
