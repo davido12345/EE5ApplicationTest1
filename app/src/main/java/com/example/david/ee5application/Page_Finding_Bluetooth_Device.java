@@ -23,7 +23,8 @@ import java.util.UUID;
 
 
 public class Page_Finding_Bluetooth_Device extends AppCompatActivity implements AdapterView.OnItemClickListener{
-    private static final String TAG = "Page_Finding_Bluetooth_Device";
+
+    private static final String TAG = "Find_Bluetooth_Device";
 
     BluetoothAdapter mBluetoothAdapter;
 
