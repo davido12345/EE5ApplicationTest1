@@ -144,8 +144,8 @@ public class Upload_page extends AppCompatActivity {
                 //item.setSession_id(sessionId + maxSessionInDatabase);
                /* db.deletePacket(packet_Id, sessionId);
                 db.addNewPacket(packet_Id, Page_Main_Driver.machineID, item.getKey_Date(), item.getKey_Time(), item.getKey_Gps_x(), item.getKey_Gps_y(), item.getKey_Joystick(),
-                        item.getKey_Oil_Temp(), item.getKey_Pitch_1(), item.getKey_Roll_1(), item.getKey_Yaw_1(), item.getKey_Pitch_2(),
-                        item.getKey_Roll_2(), item.getKey_Yaw_2(), item.getKey_Pitch_3(), item.getKey_Roll_3(), item.getKey_Yaw_3()
+                        item.getKey_Oil_Temp(), item.getKey_w_1(), item.getKey_y_1(), item.getKey_x_1(), item.getKey_w_2(),
+                        item.getKey_y_2(), item.getKey_x_2(), item.getKey_w_3(), item.getKey_y_3(), item.getKey_x_3()
                );*/
 
 
@@ -157,11 +157,13 @@ public class Upload_page extends AppCompatActivity {
                     Log.d(TAG, "EXTRA INDEX");
                 }
                 Log.d(TAG, "UPLOADING A DATA!");
+
                 String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+(sessionIDOfficial)+"&id_Mower="+ Page_Main_Driver.machineID+
-                        "&time_SessionData="+item.getKey_Time()+"&Gps_x="+item.getKey_Gps_x()+"&Gps_y="+item.getKey_Gps_x()+"&Joystick="+item.getKey_Joystick()+
-                        "&Oil_temp="+item.getKey_Oil_Temp()+"&Pitch_1="+item.getKey_Pitch_1()+"&Roll_1="+item.getKey_Roll_1()+
-                        "&Yaw_1="+item.getKey_Yaw_1()+"&Pitch_2="+item.getKey_Pitch_2()+"&Roll_2="+item.getKey_Roll_2()+"&Yaw_2="+item.getKey_Yaw_2()+
-                        "&Pitch_3="+item.getKey_Pitch_3()+"&Roll_3="+item.getKey_Roll_3()+"&Yaw_3="+item.getKey_Yaw_3()+"";
+                        "&time_SessionData="+item.getKey_Time()+"&Gps_x="+item.getKey_Gps_x()+"&Gps_y="+item.getKey_Gps_x()+"&Joystick_x="+item.getKey_Joystick_x()+
+                        "&Joystick_y="+item.getKey_Joystick_y()+"&Joystick_z="+item.getKey_Joystick_z()+"&Joystick_b1="+item.getKey_Joystick_b1()+
+                        "&Joystick_b2="+item.getKey_Joystick_b2()+"&Oil_temp="+item.getKey_Oil_Temp()+"&w_1="+item.getKey_w_1()+"&x_1="+item.getKey_x_1()+
+                        "&y_1="+item.getKey_y_1()+"&z_1="+item.getKey_z_1()+"&w_2="+item.getKey_w_2()+"&x_2="+item.getKey_x_2()+"&y_2="+item.getKey_y_2()+"&z_2="+item.getKey_z_2()+
+                        "&w_3="+item.getKey_w_3()+"&x_3="+item.getKey_x_3()+"&y_3="+item.getKey_y_3()+"&z_3="+item.getKey_z_3()+"";
 
                 JSonVolley(insertPacketToDataBase);
             }

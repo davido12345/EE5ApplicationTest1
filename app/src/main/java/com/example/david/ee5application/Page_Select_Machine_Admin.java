@@ -132,20 +132,29 @@ public class Page_Select_Machine_Admin extends AppCompatActivity {
             InfoArrays.name_Mower.add(jsonObject.getString(Keys.name_Mower));
 
         } else if (url.equals(Links.allSessionData)) {
-
-            InfoArrays.id_dataSD.add(jsonObject.getInt(Keys.session_data_id));
+            InfoArrays.sessionData_id.add(jsonObject.getInt(Keys.session_data_id));
+            InfoArrays.session_id.add(jsonObject.getInt(Keys.session_id));
             InfoArrays.id_MowerSD.add(jsonObject.getString(Keys.session_mower_id));
             InfoArrays.timeSD.add(jsonObject.getString(Keys.session_data_time));
             InfoArrays.GPS_XSD.add(jsonObject.getDouble(Keys.session_data_Gps_x));
             InfoArrays.GPS_YSD.add(jsonObject.getDouble(Keys.session_data_Gps_y));
             InfoArrays.JoystickSD.add(jsonObject.getDouble(Keys.session_data_Joystic));
             InfoArrays.Oil_TempSD.add(jsonObject.getDouble(Keys.session_data_Oil_temp));
-            InfoArrays.Acc_X_1SD.add(jsonObject.getDouble(Keys.session_data_Acc_x_1));
-            InfoArrays.Acc_Y_1SD.add(jsonObject.getDouble(Keys.session_data_Acc_y_1));
-            InfoArrays.Acc_Z_1SD.add(jsonObject.getDouble(Keys.session_data_Acc_z_1));
-            InfoArrays.Pitch_1SD.add(jsonObject.getDouble(Keys.session_data_Pitch_1));
-            InfoArrays.Yaw_1SD.add(jsonObject.getDouble(Keys.session_data_Yaw_1));
-            InfoArrays.Roll_1SD.add(jsonObject.getDouble(Keys.session_data_Roll_1));
+
+            InfoArrays.w_1SD.add(jsonObject.getDouble(Keys.session_data_w_1));
+            InfoArrays.x_1SD.add(jsonObject.getDouble(Keys.session_data_x_1));
+            InfoArrays.y_1SD.add(jsonObject.getDouble(Keys.session_data_y_1));
+            InfoArrays.z_1SD.add(jsonObject.getDouble(Keys.session_data_z_1));
+
+            InfoArrays.w_2SD.add(jsonObject.getDouble(Keys.session_data_w_2));
+            InfoArrays.x_2SD.add(jsonObject.getDouble(Keys.session_data_x_2));
+            InfoArrays.y_2SD.add(jsonObject.getDouble(Keys.session_data_y_2));
+            InfoArrays.z_2SD.add(jsonObject.getDouble(Keys.session_data_z_2));
+
+            InfoArrays.w_3SD.add(jsonObject.getDouble(Keys.session_data_w_3));
+            InfoArrays.x_3SD.add(jsonObject.getDouble(Keys.session_data_x_3));
+            InfoArrays.y_3SD.add(jsonObject.getDouble(Keys.session_data_y_3));
+            InfoArrays.z_3SD.add(jsonObject.getDouble(Keys.session_data_z_3));
 
         } else {
 

@@ -50,6 +50,18 @@ public class Page_Arm_State extends AppCompatActivity {
 
             }
         });
+
+        Button sensorCheck = (Button)findViewById(R.id.button5);
+
+        sensorCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent data = new Intent(Page_Arm_State.this, Page_Temperature_Data.class);
+                startActivity(data);
+
+            }
+        });
     }
     //Sends URL queries over the internet
     public void JSonVolley(final String url) {

@@ -272,17 +272,26 @@ public class Routine_BT_Data_Receiver {
                     String Time="";
                     double GPS_x=0;
                     double GPS_y=0;
-                    double Joystick=0;
+
+                    double Joystick_x=0;
+                    double Joystick_y=0;
+                    double Joystick_z=0;
+                    double Joystick_b1=0;
+                    double Joystick_b2=0;
+
                     double Oil_temp=0;
-                    double Pitch_1=0;
-                    double Roll_1=0;
-                    double Yaw_1=0;
-                    double Pitch_2=0;
-                    double Roll_2=0;
-                    double Yaw_2=0;
-                    double Pitch_3=0;
-                    double Roll_3=0;
-                    double Yaw_3=0;
+                    double w_1=0;
+                    double x_1=0;
+                    double y_1=0;
+                    double z_1=0;
+                    double w_2=0;
+                    double x_2=0;
+                    double y_2=0;
+                    double z_2=0;
+                    double w_3=0;
+                    double x_3=0;
+                    double y_3=0;
+                    double z_3=0;
 
                     Log.d(TAG, "Input Stream: "+incomingMessage);
 
@@ -295,48 +304,71 @@ public class Routine_BT_Data_Receiver {
                         if(first.contains("%") && first.contains(">")){
                             String[] separated = first.split("\\*");
                             Log.d(TAG, "WE DID THIS 1");
+
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
                             Time =  separated[3];
                             GPS_x = Double.parseDouble(separated[4]);
                             GPS_y =  Double.parseDouble(separated[5]);
-                            Joystick =  Double.parseDouble(separated[6]);
-                            Oil_temp =  Double.parseDouble(separated[7]);
-                            Pitch_1 =  Double.parseDouble(separated[8]);
-                            Roll_1 =  Double.parseDouble(separated[9]);
-                            Yaw_1 =  Double.parseDouble(separated[10]);
-                            Pitch_2 =  Double.parseDouble(separated[11]);
-                            Roll_2 =  Double.parseDouble(separated[12]);
-                            Yaw_2 =  Double.parseDouble(separated[13]);
-                            Pitch_3 =  Double.parseDouble(separated[14]);
-                            Roll_3 =  Double.parseDouble(separated[15]);
-                            Yaw_3 =  Double.parseDouble(separated[16]);
+                            Joystick_x =  Double.parseDouble(separated[6]);
+                            Joystick_y =  Double.parseDouble(separated[7]);
+                            Joystick_z =  Double.parseDouble(separated[8]);
+                            Joystick_b1 =  Double.parseDouble(separated[9]);
+                            Joystick_b2 =  Double.parseDouble(separated[10]);
+
+                            Oil_temp =  Double.parseDouble(separated[11]);
+
+                            w_1 =  ((Double.parseDouble(separated[12])/100)-1);
+                            x_1 =  ((Double.parseDouble(separated[13])/100)-1);
+                            y_1 =  ((Double.parseDouble(separated[14])/100)-1);
+                            z_1 =  ((Double.parseDouble(separated[15])/100)-1);
+
+                            w_2 =  ((Double.parseDouble(separated[16])/100)-1);
+                            x_2 =  ((Double.parseDouble(separated[17])/100)-1);
+                            y_2 =  ((Double.parseDouble(separated[18])/100)-1);
+                            z_2 =  ((Double.parseDouble(separated[19])/100)-1);
+
+                            w_3 =  ((Double.parseDouble(separated[20])/100)-1);
+                            x_3 =  ((Double.parseDouble(separated[21])/100)-1);
+                            y_3 =  ((Double.parseDouble(separated[22])/100)-1);
+                            z_3 =  ((Double.parseDouble(separated[23])/100)-1);
                          } else if (second.contains("%")){
                             String[] separated = second.split("\\*");
                             Log.d(TAG, "WE DID THIS 2");
+
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
                             Time =  separated[3];
                             GPS_x = Double.parseDouble(separated[4]);
                             GPS_y =  Double.parseDouble(separated[5]);
-                            Joystick =  Double.parseDouble(separated[6]);
-                            Oil_temp =  Double.parseDouble(separated[7]);
-                            Pitch_1 =  Double.parseDouble(separated[8]);
-                            Roll_1 =  Double.parseDouble(separated[9]);
-                            Yaw_1 =  Double.parseDouble(separated[10]);
-                            Pitch_2 =  Double.parseDouble(separated[11]);
-                            Roll_2 =  Double.parseDouble(separated[12]);
-                            Yaw_2 =  Double.parseDouble(separated[13]);
-                            Pitch_3 =  Double.parseDouble(separated[14]);
-                            Roll_3 =  Double.parseDouble(separated[15]);
-                            Yaw_3 =  Double.parseDouble(separated[16]);
+                            Joystick_x =  Double.parseDouble(separated[6]);
+                            Joystick_y =  Double.parseDouble(separated[7]);
+                            Joystick_z =  Double.parseDouble(separated[8]);
+                            Joystick_b1 =  Double.parseDouble(separated[9]);
+                            Joystick_b2 =  Double.parseDouble(separated[10]);
+                            Oil_temp =  Double.parseDouble(separated[11]);
+
+                            w_1 =  ((Double.parseDouble(separated[12])/100)-1);
+                            x_1 =  ((Double.parseDouble(separated[13])/100)-1);
+                            y_1 =  ((Double.parseDouble(separated[14])/100)-1);
+                            z_1 =  ((Double.parseDouble(separated[15])/100)-1);
+
+                            w_2 =  ((Double.parseDouble(separated[16])/100)-1);
+                            x_2 =  ((Double.parseDouble(separated[17])/100)-1);
+                            y_2 =  ((Double.parseDouble(separated[18])/100)-1);
+                            z_2 =  ((Double.parseDouble(separated[19])/100)-1);
+
+                            w_3 =  ((Double.parseDouble(separated[20])/100)-1);
+                            x_3 =  ((Double.parseDouble(separated[21])/100)-1);
+                            y_3 =  ((Double.parseDouble(separated[22])/100)-1);
+                            z_3 =  ((Double.parseDouble(separated[23])/100)-1);
                         } else {
                             Log.d(TAG, "WE DID THIS NONE!");
                         }
                     Log.d(TAG, "MOWER ID: " + Mower_id);
                     Log.d(TAG, "Time: " + Time);
-                    Log.d(TAG, "Yaw_3: " + Yaw_3);
-                    db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, Time, GPS_x, GPS_y, Joystick, Oil_temp, Pitch_1, Roll_1, Yaw_1, Pitch_2, Roll_2, Yaw_2, Pitch_3, Roll_3, Yaw_3);
+                    Log.d(TAG, "y_3: " + y_3);
+                    db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, Time, GPS_x, GPS_y, Joystick_x,Joystick_y,Joystick_z,Joystick_b1,Joystick_b2, Oil_temp, w_1, x_1, y_1, z_1, w_2, x_2, y_2, z_2, w_3, x_3, y_3, z_3);
                     Log.d(TAG, "Packet Data of the Time entered as: "+db.getSessionData(packet_id).getKey_Time());
                     Log.d(TAG, "Packet addition was successful with packet ID = "+packet_id);
                     Log.d(TAG, "Session Data received GPS_X = " + db.getSessionData(0).getKey_Time());
