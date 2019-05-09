@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import java.util.Calendar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +160,7 @@ public class Database_Session_Storage extends SQLiteOpenHelper {
         session_details.put(Key_Date, data.getKey_Date());
         session_details.put(Key_Time, data.getKey_Time());
         session_details.put(Key_Oil_Temp, data.getKey_Oil_Temp());
+
 
         session_details.put(Key_Joystick_x, data.getKey_Joystick_x());
         session_details.put(Key_Joystick_y, data.getKey_Joystick_y());

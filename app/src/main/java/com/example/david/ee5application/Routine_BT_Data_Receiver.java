@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
-
+import java.text.DateFormat;
 
 
 public class Routine_BT_Data_Receiver {
@@ -258,7 +260,7 @@ public class Routine_BT_Data_Receiver {
                 // Read from the InputStream
                 try {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -302,12 +304,18 @@ public class Routine_BT_Data_Receiver {
 
                     Log.d(TAG, "The Second packet selected: "+second);
                         if(first.contains("%") && first.contains(">")){
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:ms");
+                            String formattedDate = df.format(c.getTime());
+                            // formattedDate have current date/time
+
                             String[] separated = first.split("\\*");
                             Log.d(TAG, "WE DID THIS 1");
 
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
-                            Time =  separated[3];
+                            Time =  formattedDate;
+
                             GPS_x = Double.parseDouble(separated[4]);
                             GPS_y =  Double.parseDouble(separated[5]);
                             Joystick_x =  Double.parseDouble(separated[6]);
@@ -333,12 +341,17 @@ public class Routine_BT_Data_Receiver {
                             y_3 =  ((Double.parseDouble(separated[22])/100)-1);
                             z_3 =  ((Double.parseDouble(separated[23])/100)-1);
                          } else if (second.contains("%")){
-                            String[] separated = second.split("\\*");
-                            Log.d(TAG, "WE DID THIS 2");
+                            Calendar c = Calendar.getInstance();
+                            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:ms");
+                            String formattedDate = df.format(c.getTime());
+                            // formattedDate have current date/time
+
+                            String[] separated = first.split("\\*");
+                            Log.d(TAG, "WE DID THIS 1");
 
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
-                            Time =  separated[3];
+                            Time =  formattedDate;
                             GPS_x = Double.parseDouble(separated[4]);
                             GPS_y =  Double.parseDouble(separated[5]);
                             Joystick_x =  Double.parseDouble(separated[6]);

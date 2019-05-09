@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Page_Login extends AppCompatActivity {
         String TAG = "Login Page: ";
@@ -32,6 +34,15 @@ public class Page_Login extends AppCompatActivity {
         validUsers.add("driver");
         validPasswords.add("admin");
         validPasswords.add("driver");
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:ms");
+        String formattedDate = df.format(c.getTime());
+        // formattedDate have current date/time
+        Toast.makeText(this, formattedDate, Toast.LENGTH_SHORT).show();
+
+        
+        
 
         //Check Login details once the login is verified.
         Login.setOnClickListener(new View.OnClickListener() {
