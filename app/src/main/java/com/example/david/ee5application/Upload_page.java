@@ -24,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import static com.example.david.ee5application.Page_Main_Driver.machineID;
 
 public class Upload_page extends AppCompatActivity {
@@ -55,7 +57,23 @@ public class Upload_page extends AppCompatActivity {
 
             Database_Session_Storage db = new Database_Session_Storage(context);
             int maximumTableStored = db.checkMax();
-            JSonVolley(Links.specificMowerMax+machineID);
+            long sizeStorage = db.getEntriesCount();
+            ArrayList allDataStored = new ArrayList();
+            for(int i = 0; i<sizeStorage; i++){
+                Data_Structure_Packet item = (Data_Structure_Packet) db.getAllSessionData().get(i);
+                allDataStored.add(item);
+                Log.d(TAG, "There are exactly: "+allDataStored.size()+"Stored in the Database");
+                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+(5)+"&id_Mower="+ Page_Main_Driver.machineID+
+                        "&time_SessionData="+item.getKey_Time()+"&Gps_x="+item.getKey_Gps_x()+"&Gps_y="+item.getKey_Gps_x()+"&Joystick_x="+item.getKey_Joystick_x()+
+                        "&Joystick_y="+item.getKey_Joystick_y()+"&Joystick_z="+item.getKey_Joystick_z()+"&Joystick_b1="+item.getKey_Joystick_b1()+
+                        "&Joystick_b2="+item.getKey_Joystick_b2()+"&Oil_temp="+item.getKey_Oil_Temp()+"&w_1="+item.getKey_w_1()+"&x_1="+item.getKey_x_1()+
+                        "&y_1="+item.getKey_y_1()+"&z_1="+item.getKey_z_1()+"&w_2="+item.getKey_w_2()+"&x_2="+item.getKey_x_2()+"&y_2="+item.getKey_y_2()+"&z_2="+item.getKey_z_2()+
+                        "&w_3="+item.getKey_w_3()+"&x_3="+item.getKey_x_3()+"&y_3="+item.getKey_y_3()+"&z_3="+item.getKey_z_3()+"";
+
+                JSonVolley(insertPacketToDataBase);
+
+            }
+            //JSonVolley(Links.specificMowerMax+machineID);
             //SOME KIND OF LOOP:
 
 
@@ -125,11 +143,11 @@ public class Upload_page extends AppCompatActivity {
     //Code to transfer retrieved JSON data into arraylists in the application.
     public void JSonToArray (JSONObject jsonObject, String url) throws Exception {
 
-        if (url.equals(Links.specificMowerMax+machineID)) {
+       /* if (url.equals(Links.specificMowerMax+machineID)) {
 
-            InfoArrays.maxSession = jsonObject.getInt(Keys.maximumSessionValue);
-            Log.d(TAG, "Received from DB MaxSession = "+jsonObject.getInt(Keys.maximumSessionValue));
-            maxSessionInDatabase = jsonObject.getInt(Keys.maximumSessionValue);
+            //InfoArrays.maxSession = 5;//jsonObject.getInt(Keys.maximumSessionValue);
+            //Log.d(TAG, "Received from DB MaxSession = "+jsonObject.getInt(Keys.maximumSessionValue));
+            //maxSessionInDatabase = jsonObject.getInt(Keys.maximumSessionValue);
             Database_Session_Storage db = new Database_Session_Storage(mContext);
             long dbEntries = db.getEntriesCount();
             Log.d(TAG,"dbEntries are equal to: "+dbEntries);
@@ -148,7 +166,7 @@ public class Upload_page extends AppCompatActivity {
                         item.getKey_y_2(), item.getKey_x_2(), item.getKey_w_3(), item.getKey_y_3(), item.getKey_x_3()
                );*/
 
-
+/*
                 Log.d(TAG, "USING LISTS COMPONENT OF GPS_X: "+item.getKey_Gps_x());
                 Log.d(TAG, "SESSION ID!: "+item.getSession_id());
                 int sessionIDOfficial = sessionId+maxSessionInDatabase;
@@ -158,7 +176,7 @@ public class Upload_page extends AppCompatActivity {
                 }
                 Log.d(TAG, "UPLOADING A DATA!");
 
-                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+(sessionIDOfficial)+"&id_Mower="+ Page_Main_Driver.machineID+
+                String insertPacketToDataBase = "https://a18ee5mow2.studev.groept.be/InsertSessionData.php?id_Session="+(5)+"&id_Mower="+ Page_Main_Driver.machineID+
                         "&time_SessionData="+item.getKey_Time()+"&Gps_x="+item.getKey_Gps_x()+"&Gps_y="+item.getKey_Gps_x()+"&Joystick_x="+item.getKey_Joystick_x()+
                         "&Joystick_y="+item.getKey_Joystick_y()+"&Joystick_z="+item.getKey_Joystick_z()+"&Joystick_b1="+item.getKey_Joystick_b1()+
                         "&Joystick_b2="+item.getKey_Joystick_b2()+"&Oil_temp="+item.getKey_Oil_Temp()+"&w_1="+item.getKey_w_1()+"&x_1="+item.getKey_x_1()+
@@ -169,7 +187,7 @@ public class Upload_page extends AppCompatActivity {
             }
             getApplicationContext().deleteDatabase("Session_Data");
 
-        }
+        }*/
 
 
         }

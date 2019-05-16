@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 import java.text.DateFormat;
@@ -256,6 +257,7 @@ public class Routine_BT_Data_Receiver {
             Database_Session_Storage db = new Database_Session_Storage(mContext);
             db.createHistoricLog();
             // Keep listening to the InputStream until an exception occurs
+
             while (end == false) {
                 // Read from the InputStream
                 try {
@@ -304,9 +306,6 @@ public class Routine_BT_Data_Receiver {
 
                     Log.d(TAG, "The Second packet selected: "+second);
                         if(first.contains("%") && first.contains(">")){
-                            Calendar c = Calendar.getInstance();
-                            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:ms");
-                            String formattedDate = df.format(c.getTime());
                             // formattedDate have current date/time
 
                             String[] separated = first.split("\\*");
@@ -314,7 +313,7 @@ public class Routine_BT_Data_Receiver {
 
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
-                            Time =  formattedDate;
+
 
                             GPS_x = Double.parseDouble(separated[4]);
                             GPS_y =  Double.parseDouble(separated[5]);
@@ -341,17 +340,15 @@ public class Routine_BT_Data_Receiver {
                             y_3 =  ((Double.parseDouble(separated[22])/100)-1);
                             z_3 =  ((Double.parseDouble(separated[23])/100)-1);
                          } else if (second.contains("%")){
-                            Calendar c = Calendar.getInstance();
-                            SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:ms");
-                            String formattedDate = df.format(c.getTime());
+
                             // formattedDate have current date/time
 
-                            String[] separated = first.split("\\*");
+                            String[] separated = second.split("\\*");
                             Log.d(TAG, "WE DID THIS 1");
 
                             Mower_id =  Integer.parseInt(separated[1]);
                             Date = separated[2];
-                            Time =  formattedDate;
+
                             GPS_x = Double.parseDouble(separated[4]);
                             GPS_y =  Double.parseDouble(separated[5]);
                             Joystick_x =  Double.parseDouble(separated[6]);
@@ -381,7 +378,11 @@ public class Routine_BT_Data_Receiver {
                     Log.d(TAG, "MOWER ID: " + Mower_id);
                     Log.d(TAG, "Time: " + Time);
                     Log.d(TAG, "y_3: " + y_3);
-                    db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, Time, GPS_x, GPS_y, Joystick_x,Joystick_y,Joystick_z,Joystick_b1,Joystick_b2, Oil_temp, w_1, x_1, y_1, z_1, w_2, x_2, y_2, z_2, w_3, x_3, y_3, z_3);
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+                    String formattedDate = df.format(c.getTime());
+                    db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, formattedDate, GPS_x, GPS_y, Joystick_x,Joystick_y,Joystick_z,Joystick_b1,Joystick_b2, Oil_temp, w_1, x_1, y_1, z_1, w_2, x_2, y_2, z_2, w_3, x_3, y_3, z_3);
+
                     Log.d(TAG, "Packet Data of the Time entered as: "+db.getSessionData(packet_id).getKey_Time());
                     Log.d(TAG, "Packet addition was successful with packet ID = "+packet_id);
                     Log.d(TAG, "Session Data received GPS_X = " + db.getSessionData(0).getKey_Time());
@@ -397,6 +398,14 @@ public class Routine_BT_Data_Receiver {
 
 
             }
+            ArrayList allDataStored = new ArrayList();
+            long sizeStorage = db.getEntriesCount();
+            for(int i = 0; i<sizeStorage; i++) {
+                Data_Structure_Packet item = (Data_Structure_Packet) db.getAllSessionData().get(i);
+                allDataStored.add(item);
+                Log.d(TAG, "THE TIME WE HAVE RECORDED IS: "+item.getKey_Time());
+            }
+            db.close();
         }
 
         //Call this from the main activity to send data to the remote device
