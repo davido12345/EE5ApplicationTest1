@@ -379,7 +379,7 @@ public class Routine_BT_Data_Receiver {
                     Log.d(TAG, "Time: " + Time);
                     Log.d(TAG, "y_3: " + y_3);
                     Calendar c = Calendar.getInstance();
-                    SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+                    SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss.SSSS");
                     String formattedDate = df.format(c.getTime());
                     db.addNewPacket(packet_id, Page_Main_Driver.machineID, Date, formattedDate, GPS_x, GPS_y, Joystick_x,Joystick_y,Joystick_z,Joystick_b1,Joystick_b2, Oil_temp, w_1, x_1, y_1, z_1, w_2, x_2, y_2, z_2, w_3, x_3, y_3, z_3);
 
